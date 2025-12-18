@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
 // Public routes
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home', [
         'stats' => [
             'listings' => \App\Models\MaterialListing::available()->count(),
             'projects' => \App\Models\GalleryProject::count(),

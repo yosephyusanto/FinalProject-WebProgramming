@@ -1,0 +1,75 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\MaterialListing;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MaterialListing>
+ */
+class MaterialListingFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+
+    protected $model = MaterialListing::class;
+
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->randomElement([
+                'Cotton Fabric Scraps',
+                'Blue Leather Off-cuts',
+                'Plywood Workshop Leftovers',
+                'Acrylic Packaging Sheets',
+                'Mixed Textile Remnants',
+                'Old Wooden Pallets',
+                'Used Plastic Containers',
+                'Scrap Metal Pieces',
+                'Glass Bottles',
+                'Fabric Offcuts',
+            ]),
+            'description' => $this->faker->paragraph(),
+            'material_type' => $this->faker->randomElement([
+                'Plastic', 'Metal', 'Wood', 'Glass', 'Fabric', 'Leather', 'Paper', 'Composite'
+            ]),
+            'color' => $this->faker->safeColorName(),
+            'estimated_weight' => $this->faker->randomFloat(2, 1, 50),
+            'estimated_volume' => $this->faker->randomFloat(2, 0.5, 20),
+            'condition' => $this->faker->randomElement([
+                'good', 'used', 'damaged'
+            ]),
+            'location' => $this->faker->city(),
+            'status' => 'available',
+            'pickup_window_start' => now()->addDays(rand(1, 3)),
+            'pickup_window_end' => now()->addDays(rand(4, 7)),
+
+        ];
+    }
+
+    public function available()
+    {
+        return $this->state(fn () => [
+            'status' => 'available',
+        ]);
+    }
+
+    public function claimed()
+    {
+        return $this->state(fn () => [
+            'status' => 'claimed',
+        ]);
+    }
+
+    public function completed()
+    {
+        return $this->state(fn () => [
+            'status' => 'completed',
+        ]);
+    }
+}
