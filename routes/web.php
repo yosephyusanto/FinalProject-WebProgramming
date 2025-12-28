@@ -17,11 +17,12 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
+Route::get('/marketplace', [MaterialListingController::class, 'index'])
+    ->name('marketplace');
+
 // Protected routes
 Route::middleware(['auth'])->group(function () {
     // Marketplace
-    Route::get('/marketplace', [MaterialListingController::class, 'index'])
-        ->name('marketplace');
     Route::get('/listings/create', [MaterialListingController::class, 'create'])
         ->name('listings.create');
     Route::post('/listings', [MaterialListingController::class, 'store'])
