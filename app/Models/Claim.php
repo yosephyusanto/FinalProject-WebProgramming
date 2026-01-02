@@ -12,7 +12,9 @@ class Claim extends Model
     protected $fillable = [
         'material_listing_id',
         'claimed_by_user_id',
-        'status'
+        'status',
+        'price_at_purchase',
+        'quantity'
     ];
 
     protected $casts = ['status' => 'string'];

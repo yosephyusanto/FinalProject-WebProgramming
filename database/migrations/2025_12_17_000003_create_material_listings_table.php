@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string('condition');
             $table->string('location');
             $table->enum('status', ['available', 'claimed', 'completed'])->default('available');
+            $table->decimal('price', 12, 2)->nullable();
+            $table->enum('pricing_type', ['fixed', 'negotiable', 'free'])->default('fixed');
+            $table->string('currency', 3)->default('IDR');
+            $table->integer('stock')->default(1);
+            $table->boolean('is_active')->default(true);
             $table->datetime('pickup_window_start')->nullable();
             $table->datetime('pickup_window_end')->nullable();
             $table->timestamps();
