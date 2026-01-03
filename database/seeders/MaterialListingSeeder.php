@@ -22,9 +22,12 @@ class MaterialListingSeeder extends Seeder
         // AVAILABLE (mayoritas)
         MaterialListing::factory()
             ->count(20)
-            ->for($givers->random())
             ->available()
-            ->create();
+            ->make()
+            ->each(function ($listing) use ($givers){
+                $listing->user_id = $givers->random()->id;
+                $listing->save();
+            });
 
         // CLAIMED
         MaterialListing::factory()
