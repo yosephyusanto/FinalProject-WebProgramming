@@ -18,7 +18,7 @@ class ClaimController extends Controller
         if(!$user->isTaker()){
             return back()->with('error', 'Only takers can claim listings.');
         }
-
+        
         // logic : listing must be able to be claimed
         if(!$listing->canBeClaimed()){
             return back()->with('error', 'This listing is no longer available.');
@@ -29,13 +29,28 @@ class ClaimController extends Controller
             return back()->with('error', 'You cannot claim your own listings.');
         }
 
+        $quantity = $request->input('quantity', 1);
+
+        if($quantity > $listing->stock){
+            return back()->with('error', 'Not enough stock available.');
+        }
+
         try{
-            $claim = Claim::createClaim($listing, Auth::user());
+            $claim = Claim::create([
+                'material_listing_id' => $listing->id,
+                'claimed_by_user_id' => $user->id,
+                'quantity' => $quantity,
+                'price_at_purchase' => $listing->price,
+                'status' => 'pending'
+            ]);
 
             // Update listing status
-            $listing->update(['status' => 'claimed']);
+            $listing->decrement('stock', $quantity);
 
-            return redirect()->route('claim.show', $claim)->with('succes', 'Listing claimed succesfully! You can now coordinate pickup.');
+            if($listing->stock <= 0){
+                return redirect()->route('claim.show', $claim)
+                ->with('succes', 'Listing claimed succesfully! You can now coordinate pickup.');
+            }
         }catch(\Exception $e){
             return back()->with('error', $e->getMessage());
         }
@@ -48,7 +63,7 @@ class ClaimController extends Controller
             abort(403, 'Unauthorized.');
         }
 
-        $claim->load(['materialListing.photos', 'claimedBy', 'message.sender']);
+        $claim->load(['materialListing.photos', 'claimedBy', 'messages.sender']);
 
         return Inertia::render('Claims/Show', [
             'claim' => $claim,

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('material_listing_id')->constrained()->onDelete('cascade');
             $table->foreignId('claimed_by_user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
+            $table->decimal('price_at_purchase', 12, 2);
+            $table->integer('quantity')->default(1);
+            $table->enum('status', ['pending', 'accepted', 'rejected', 'completed']);
             $table->timestamps();
 
             // One active claim for per listing

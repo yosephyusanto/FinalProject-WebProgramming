@@ -12,7 +12,11 @@ class MaterialListingController extends Controller
 {
     //Display marketplace
     public function index(Request $request){
-        $query = MaterialListing::available()->with(['user', 'photos'])->latest();
+        $query = MaterialListing::query()
+        ->where('is_active', true)
+        ->where('status', 'available')
+        ->with(['user', 'photos'])
+        ->latest();
         
         // Apply filter from request
         if($request->hasAny(['material_type', 'color', 'location'])){
@@ -56,11 +60,19 @@ class MaterialListingController extends Controller
             'estimated_volume' => 'nullable|string|max:100',
             'condition' => 'required|string',
             'location' => 'required|string|max:500',
+            'price' => 'nullable|numeric|min:0',
+            'pricing_type' => 'required|in:fixed, negotiable, free',
+            'currency' => 'required|string|size:3',
+            'stock' => 'required|string|min:1',
             'pickup_window_start' => 'nullable|date',
             'pickup_window_end' => 'nullable|date|after:pickup_window_start',
             'photos' => 'nullable|array',
             'photos.*' => 'image|max:2048'
         ]);
+
+        if($validated['pricing_type'] === 'free'){
+            $validated['price'] == 0;
+        }
 
         // create listing
         $listing = $user->materialListings()->create($validated);
