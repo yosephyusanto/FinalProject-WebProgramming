@@ -31,6 +31,16 @@ class MaterialListingController extends Controller
         );
     }
 
+    //Show specific listing
+    public function show(MaterialListing $materialListing)
+    {
+        $materialListing->load(['user', 'photos', 'claim']); // eager load relationships
+        // dd($materialListing);
+        return Inertia::render('Marketplace/Show', [
+            'listing' => $materialListing
+        ]);
+    }
+
     // creating from (for giver)
     public function create(){
         $user = Auth::user();
@@ -61,7 +71,7 @@ class MaterialListingController extends Controller
             'condition' => 'required|string',
             'location' => 'required|string|max:500',
             'price' => 'nullable|numeric|min:0',
-            'pricing_type' => 'required|in:fixed, negotiable, free',
+            'pricing_type' => 'required|in:fixed,negotiable,free',
             'currency' => 'required|string|size:3',
             'stock' => 'required|string|min:1',
             'pickup_window_start' => 'nullable|date',
@@ -91,7 +101,7 @@ class MaterialListingController extends Controller
         // notification trigger
         $this->notifyMatchingSearches($listing);
 
-        return redirect()->route('marketplace.show', $listing)->with('success', 'Listing created succesfully!');
+        return redirect()->route('marketplace.index', $listing)->with('success', 'Listing created succesfully!');
     }
 
     private function notifyMatchingSearches(MaterialListing $listing){

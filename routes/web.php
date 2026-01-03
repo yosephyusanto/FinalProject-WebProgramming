@@ -18,7 +18,7 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 Route::get('/marketplace', [MaterialListingController::class, 'index'])
-    ->name('marketplace');
+    ->name('marketplace.index');
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {

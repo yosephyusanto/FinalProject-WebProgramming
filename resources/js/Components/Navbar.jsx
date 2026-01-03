@@ -21,12 +21,14 @@ const Navbar = () => {
               {/* Guest */}
               {!user && (
                 <>
+                  <Link href="/" className={navLinkClass}>Home</Link>
                   <Link href="/marketplace" className={navLinkClass}>Marketplace</Link>
                 </>
               )}
 
               {user?.role == 'giver' && (
                 <>
+                  <Link href="/" className={navLinkClass}>Home</Link>
                   <Link href="/marketplace" className={navLinkClass}>Marketplace</Link>
                   <Link href="/listings/create" className={navLinkClass}>Create Listing</Link>
                   <Link href="/gallery" className={navLinkClass}>Gallery</Link>
@@ -35,6 +37,7 @@ const Navbar = () => {
 
               {user?.role == 'taker' && (
                 <>
+                  <Link href="/" className={navLinkClass}>Home</Link>
                   <Link href="/marketplace" className={navLinkClass}>Marketplace</Link>
                   <Link href="/searches" className={navLinkClass}>Saved Search</Link>
                   <Link href="/gallery/create" className={navLinkClass}>Upload Project</Link>

@@ -16,9 +16,9 @@ const Stock = ({max_stock}) => {
   
   return (
     <div className='flex items-center border rounded-lg w-max'>
-      <button onClick={decreaseStock} disabled={stock === 1}>-</button>
+      <button onClick={decreaseStock} disabled={stock === 1} className='px-3 py-2 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100'>-</button>
       <input type="number" value={stock} min="1" readOnly/>
-      <button onClick={increaseStock} disabled={stock === max_stock}>+</button>
+      <button onClick={increaseStock} disabled={stock === max_stock} className='px-3 py-2 text-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100'>+</button>
     </div>  
   )
 }
