@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { useForm, Link } from "@inertiajs/react";
 import React from "react";
 
 const register = () => {
@@ -55,6 +55,7 @@ const register = () => {
             {processing ? 'Registering...' : 'Register'}
           </button>
         </form>
+        <p className="mt-4 text-center">Already have an account? <Link href="/login" className="text-blue-600 hover:underline">Login</Link></p>
       </div>
     </div>
   )

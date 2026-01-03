@@ -1,5 +1,5 @@
 import React from 'react'
-import {useForm} from '@inertiajs/react'
+import {useForm, Link} from '@inertiajs/react'
 
 const Login = () => {
   const {data, setData, post, processing, errors} = useForm({
@@ -37,6 +37,7 @@ const Login = () => {
             {processing ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        <p className='mt-4 text-center'>Don't have an account? <Link href="/register" className="text-blue-600 hover:underline">Register</Link></p>
       </div>
     </div>
   )
