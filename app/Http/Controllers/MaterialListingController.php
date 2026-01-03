@@ -23,7 +23,7 @@ class MaterialListingController extends Controller
             $query->filter($request->only(['material_type', 'color', 'location']));
         }
 
-        $listings = $query->paginate(12);
+        $listings = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Marketplace/Index', 
         ['listings' => $listings, 
