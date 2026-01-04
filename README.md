@@ -51,6 +51,8 @@ composer install
 
 ```bash
 npm install
+npm i react-icons 
+npm install -D daisyui
 ```
 
 ---

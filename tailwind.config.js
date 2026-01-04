@@ -1,3 +1,4 @@
+import defaultTheme from 'tailwindcss/defaultTheme'
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,8 +7,16 @@ export default {
     "./resources/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        sans: ['Poppins', ...defaultTheme.fontFamily.sans],
+      }
+    },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    // themes: false,
+    themes: ["light", "dark", "cupcake", "corporate"],
+  },
 }
 
