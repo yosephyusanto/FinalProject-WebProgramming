@@ -20,12 +20,13 @@ const Show = ({listing}) => {
     <>
       <div className='px-4 mx-auto mt-8 max-w-7xl'>
         <div className="flex gap-8">
-          {/* image */}
+          {/* image carousel*/}
           <div className='w-[380px] h-[380px] overflow-hidden rounded-lg'>
             <div>
-              <img src={listing.photos?.length > 0 ? `/storage/${listing.photos[0].image_path}` : 'images/no_image.jpg'} alt="product"  className='border rounded-xl'/>
+              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product"  className='border rounded-xl'/>
             </div>
           </div>
+          
           {/* content */}
           <div className='flex-1 space-y-4'>
             <span className={`

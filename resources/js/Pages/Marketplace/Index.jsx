@@ -16,7 +16,7 @@
               <Link href={`/listings/${listing.id}`} className="block">
                 {/* image */}
                 <div className='relative w-full h-64'>
-                  <img src={listing.photos.length > 0 ? `/storage/${listing.photos[0].image_path}` : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full rounded-t'/>
+                  <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full rounded-t'/>
                 </div>
                 {/* content */}
                 <div className='p-4'>
@@ -60,5 +60,20 @@
     data: [...],
     links: [...],
     meta: {...}
+  }
+
+  Each listing = {
+    id,
+    user_id,
+    title,
+    description,
+    photos: [
+      { image_path, order, image_url },
+    ]
+    ...
+  }
+
+  Each photo = {
+    created_at, id, image_path, image_url, material_listing_id, order
   }
   */

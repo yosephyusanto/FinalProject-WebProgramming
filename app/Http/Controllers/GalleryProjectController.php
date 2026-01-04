@@ -86,4 +86,13 @@ class GalleryProjectController extends Controller
         return redirect()->route('gallery.show', $project)
             ->with('success', 'Project shared to the gallery!');
     }
+
+    public function show(GalleryProject $galleryProject)
+    {
+        $galleryProject->load(['user', 'photos', 'materialListing']);
+
+        return Inertia::render('Gallery/Show', [
+            'project' => $galleryProject,
+        ]);
+    }
 }
