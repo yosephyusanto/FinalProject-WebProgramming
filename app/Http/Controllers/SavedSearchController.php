@@ -15,7 +15,7 @@ class SavedSearchController extends Controller
         /**@var App\Models\User $user */
 
         if(!$user->isTaker()){
-            return redirect()->route('marketplace')->with('info', 'Saved searches are only available for takers.');
+            return redirect()->route('marketplace.index')->with('info', 'Saved searches are only available for takers.');
         }
         
         $searches = $user->savedSearches()->latest()->get();

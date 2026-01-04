@@ -30,9 +30,9 @@ class LoginController extends Controller
             $user = Auth::user();
             /**@var App\Models\User $user */
             if ($user->isGiver()) {
-                return redirect()->route('marketplace')->with('success', 'Welcome back!');
+                return redirect()->route('marketplace.index')->with('success', 'Welcome back!');
             } else {
-                return redirect()->route('marketplace')->with('success', 'Welcome!');
+                return redirect()->route('marketplace.index')->with('success', 'Welcome!');
             }
         }
 

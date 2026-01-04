@@ -12,7 +12,7 @@
         </div>
         <div className='grid grid-cols-1 gap-6 mx-auto mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-7xl'>
           {listings.data.map(listing => (
-            <div id={listing.id} className='w-full overflow-hidden bg-white rounded shadow-md cursor-pointer' >
+            <div key={listing.id} className='w-full overflow-hidden bg-white rounded shadow-md cursor-pointer' >
               <Link href={`/listings/${listing.id}`} className="block">
                 {/* image */}
                 <div className='relative w-full h-64'>
@@ -22,7 +22,6 @@
                 <div className='p-4'>
                   <p className='font-semibold'>{listing.title}</p>
                   <p className='text-sm text-gray-400'>{listing.description}</p>
-                  <p>Type: {listing.material_type}</p>
                 </div>
               </Link>
             </div>

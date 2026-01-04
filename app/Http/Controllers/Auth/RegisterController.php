@@ -45,7 +45,7 @@ class RegisterController extends Controller
             return redirect()->route('listings.create')
                 ->with('success', 'Account created! You can now list materials.');
         } else {
-            return redirect()->route('marketplace')
+            return redirect()->route('marketplace.index')
                 ->with('success', 'Account created! Start browsing materials.');
         }
     }

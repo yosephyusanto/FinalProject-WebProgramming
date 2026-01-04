@@ -46,7 +46,7 @@ class MaterialListingController extends Controller
         $user = Auth::user();
         /**@var App\Models\User $user */
         if(!$user->isGiver()){
-            return redirect()->route('marketplace')->with('error', 'Only Givers can create listings.');
+            return redirect()->route('marketplace.index')->with('error', 'Only Givers can create listings.');
         }
 
         return Inertia::render('Marketplace/Create');
