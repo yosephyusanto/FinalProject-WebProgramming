@@ -43,13 +43,13 @@ class SavedSearchController extends Controller
         $user->savedSearches()->create([
             'name' => $validated['name'],
             'search_parameters' => array_filter([
-                'material_type' => $validated['material_type'] ?? null,
+                'material_type' => $validated['material_type'] ? trim($validated['material_type']) : null,
                 'color' => $validated['color'] ?? null,
                 'location' => $validated['location'] ?? null,
             ]),
             'is_active' => true,
         ]);
 
-        return back()->with('succes', 'Search saved! You will get notifications for matching listings.');
+        return back()->with('success', 'Search saved! You will get notifications for matching listings.');
     }
 }

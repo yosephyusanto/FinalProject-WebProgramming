@@ -13,7 +13,6 @@ class MaterialListingController extends Controller
     //Display marketplace
     public function index(Request $request){
         $query = MaterialListing::query()
-        ->where('is_active', true)
         ->where('status', 'available')
         ->with(['user', 'photos'])
         ->latest();
@@ -55,8 +54,9 @@ class MaterialListingController extends Controller
     //Store new listings
     public function store(Request $request){
         // Only givers can create listings
-        $user = Auth::user();
-        /**@var App\Models\User $user */
+        // $user = Auth::user();
+        // /**@var App\Models\User $user */
+        $user = $request->user();
         if(!$user->isGiver()){
             abort(403, 'Unauthorized action.');
         }
@@ -70,19 +70,11 @@ class MaterialListingController extends Controller
             'estimated_volume' => 'nullable|string|max:100',
             'condition' => 'required|string',
             'location' => 'required|string|max:500',
-            'price' => 'nullable|numeric|min:0',
-            'pricing_type' => 'required|in:fixed,negotiable,free',
-            'currency' => 'required|string|size:3',
-            'stock' => 'required|string|min:1',
             'pickup_window_start' => 'nullable|date',
             'pickup_window_end' => 'nullable|date|after:pickup_window_start',
             'photos' => 'nullable|array',
             'photos.*' => 'image|max:2048'
         ]);
-
-        if($validated['pricing_type'] === 'free'){
-            $validated['price'] == 0;
-        }
 
         // create listing
         $listing = $user->materialListings()->create($validated);
@@ -100,8 +92,7 @@ class MaterialListingController extends Controller
 
         // notification trigger
         $this->notifyMatchingSearches($listing);
-
-        return redirect()->route('marketplace.index', $listing)->with('success', 'Listing created succesfully!');
+        return redirect()->route('marketplace.show', $listing)->with('success', 'Listing created successfully!');
     }
 
     private function notifyMatchingSearches(MaterialListing $listing){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\NewMessage;
 
 class MessageController extends Controller
 {
@@ -19,13 +20,16 @@ class MessageController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        $message = $claim->message()->create([
+        $message = $claim->messages()->create([
             'sender_id' => Auth::id(),
             'message' => $validated['message']
         ]);
 
+        // ensure sender is available for frontend
+        $message->load('sender');
+
         // Broadcast via Websocket for real-time updates
-        broadcast(new \App\Events\NewMessage($message))->toOthers();
+        broadcast(new NewMessage($message))->toOthers();
 
         return back(); //Inertia will handle the update
     }

@@ -27,4 +27,8 @@ class GalleryPhoto extends Model
     public function galleryProject():BelongsTo{
         return $this->belongsTo(GalleryProject::class);
     }
+
+    public function getUrlAttribute(){
+        return asset('storage/' . $this->image_path);
+    }
 }

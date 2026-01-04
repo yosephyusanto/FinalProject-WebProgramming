@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('gallery_projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('material_listing_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('material_listing_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title');
             $table->text('description');
             $table->timestamps();
