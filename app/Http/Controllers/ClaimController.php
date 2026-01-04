@@ -48,7 +48,7 @@ class ClaimController extends Controller
             $listing->decrement('stock', $quantity);
 
             if($listing->stock <= 0){
-                return redirect()->route('claim.show', $claim)
+                return redirect()->route('claims.show', $claim)
                 ->with('succes', 'Listing claimed succesfully! You can now coordinate pickup.');
             }
         }catch(\Exception $e){
@@ -68,7 +68,8 @@ class ClaimController extends Controller
         return Inertia::render('Claims/Show', [
             'claim' => $claim,
             'listing' => $claim->materialListing,
-            'message' => $claim->messages,
+            'messages' => $claim->messages,
+            'authUserId' => Auth::id(),
             'otherUser' => $claim->claimed_by_user_id === Auth::id() ? $claim->materialListing->user : $claim->claimedBy
         ]);
     }
