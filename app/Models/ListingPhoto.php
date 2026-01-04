@@ -14,15 +14,13 @@ class ListingPhoto extends Model
         'order'
     ];
 
-    // otomatis dipanggil saat model diserialize ke JSON
-    protected $appends = ['image_url'];
+    protected $appends = ['url'];
     public function getImageUrlAttribute(): string
     {
         return Storage::url($this->image_path);
     }
 
     public $timestamps = false;
-    protected $casts = ['created_at' => 'datetime'];
 
     // relationships
     public function materialListing():BelongsTo{

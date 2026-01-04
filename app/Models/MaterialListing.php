@@ -12,6 +12,10 @@ class MaterialListing extends Model
 {
     use HasFactory;
     //
+    public const STATUS_AVAILABLE = 'available';
+    public const STATUS_CLAIMED = 'claimed';
+    public const STATUS_COMPLETED = 'completed';
+
     protected $fillable = [
         'user_id',
         'title',
@@ -23,10 +27,6 @@ class MaterialListing extends Model
         'condition',
         'location',
         'status',
-        'price',
-        'pricing_type',
-        'currency',
-        'stock',
         'pickup_window_start',
         'pickup_window_end'
     ];
@@ -56,7 +56,7 @@ class MaterialListing extends Model
 
     // logic check
     public function scopeAvailable($query){
-        return $query->where('status', 'available');
+        return $query->where('status', self::STATUS_AVAILABLE);
     }
 
     public function scopeFilter($query, array $filters){
@@ -69,15 +69,7 @@ class MaterialListing extends Model
         });
     }
 
-    public function isFree(){
-        return $this->pricing_type === 'free';
-    }
-
-    public function isPurchasable(){
-        return $this->is_active && $this->stock > 0;
-    }
-
     public function canBeClaimed(){
-        return $this->status === 'available' && $this->isPurchasable();
+        return $this->status === self::STATUS_AVAILABLE;
     }
 }
