@@ -14,7 +14,7 @@ class ListingPhoto extends Model
         'order'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['image_url'];
     public function getImageUrlAttribute(): string
     {
         return Storage::url($this->image_path);
