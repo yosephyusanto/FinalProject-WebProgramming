@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import AppLayout from '../../Layouts/AppLayout'
+import {route} from 'ziggy-js'
 
 const Create = ({userListings}) => {
   const {data, setData, post, processing, errors} = useForm({
@@ -22,6 +23,7 @@ const Create = ({userListings}) => {
 
     if (files.length > 5) {
       alert('Max 5 photos allowed')
+      e.target.value = null
       return
     }
 
