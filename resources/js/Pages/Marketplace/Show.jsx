@@ -1,20 +1,26 @@
 import React from 'react'
 import StockInput from '../../Components/StockInput'
 import AppLayout from '../../Layouts/AppLayout'
+import {route} from 'ziggy-js'
+import { Link } from '@inertiajs/react'
 
 const Show = ({listing}) => {
-  const purchaseListing = (e) => {
+  console.log(listing);
+  const handleClaim = (e) => {
     e.preventDefault()
   }
   
-  const formatPrice = (price) => {
-    return price.toLocaleString("id-ID");
-  };
-
-  const formatTime = (time) => {
-    const date = new Date(time);
-    return date.toLocaleString();
+  const formatTime = (dateString) => {
+    return new Intl.DateTimeFormat('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Asia/Jakarta',
+    }).format(new Date(dateString))
   }
+
 
   return (
     <>
@@ -39,12 +45,9 @@ const Show = ({listing}) => {
             </span>
             <h1 className='text-2xl font-bold'>{listing.title}</h1>
             
-            {listing.pricing_type === 'free' ? (
-              <span className='text-2xl font-bold'>Free</span>
-            ) : (
-              <span className='text-3xl font-bold'>{listing.currency} {formatPrice(listing.price)}</span>
-            )}
-            <table className="w-full mt-6 text-sm">
+            <p className='text-gray-600'>Offered by {listing.user.name}</p>
+
+            <table className="w-full mt-6 text-sm border-separate border-spacing-x-4">
               <tbody>
                 <tr>
                   <td className="py-2 text-gray-500">Material Type</td>
@@ -62,12 +65,22 @@ const Show = ({listing}) => {
                   <td className="py-2 text-gray-500">Location</td>
                   <td>{listing.location}</td>
                 </tr>
+                <tr>
+                  <td className='py-2 text-gray-500'>Pickup Start Date</td>
+                  <td>{formatTime(listing.pickup_window_start)}</td>
+                </tr>
+                <tr>
+                  <td className='py-2 text-gray-500'>Pickup End Date</td>
+                  <td>{formatTime(listing.pickup_window_end)}</td>
+                </tr>
               </tbody>
             </table>
             
-            <p className='text-gray-600'>{listing.description}</p>
-        
-            <p>{formatTime(listing.pickup_window_start)} - {formatTime(listing.pickup_window_end)}</p>
+            <div>
+              <h2 className='mb-2 font-semibold'>Description</h2>
+              <p className='text-gray-700 whitespace-pre-line'>{listing.description}</p>              
+            </div>
+
           </div>
           {/* purchase */}
           <div className='w-[320px]'>
@@ -78,10 +91,13 @@ const Show = ({listing}) => {
                 <p className='inline-flex items-center gap-1'>Stock: <span className='font-semibold'>{listing.stock}</span></p>
               </div>
               <div className='space-y-2'>
-                <form onSubmit={purchaseListing}>
-                  <button disabled={!listing.can_be_claimed} className='w-full px-4 py-2 text-white bg-black rounded cursor-pointer'>{listing.pricing_type === 'free' ? 'Claim' : 'Buy'}</button>
-                </form>
-                <button className='w-full px-4 py-2 text-black border border-black rounded cursor-pointer'>Message</button>
+                <button 
+                  disabled={!listing.can_be_claimed} 
+                  className='w-full px-4 py-2 text-white bg-black rounded cursor-pointer'
+                  onClick={handleClaim}
+                >
+                  Claim
+                </button>
               </div>
             </div>
           </div>

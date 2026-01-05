@@ -4,10 +4,12 @@ import AppLayout from '../../Layouts/AppLayout'
 const Show = ({project}) => {
   console.log(project)
   const photos = project.photos || []
-  const noImage = { image_path: 'images/no_image.jpg' }
+  const noImage = { image_path: '../images/no_image.jpg' }
   const [activePhoto, setActivePhoto] = useState(
     photos.length > 0 ? photos[0] : null
   )
+
+  console.log(noImage.image_path)
 
   return (
      <div className="max-w-6xl px-4 py-8 mx-auto">
@@ -15,10 +17,17 @@ const Show = ({project}) => {
 
         {/* LEFT: IMAGE GALLERY */}
         <div>
-          {activePhoto && (
+          {activePhoto !== null ? (
             <div className="mb-4 overflow-hidden border rounded-xl bg-base-100">
               <img
-                src={activePhoto.image_url ?? noImage.image_path}
+                src={activePhoto.image_url}
+                className="w-full h-[420px] object-cover"
+              />
+            </div>
+          ) :(
+            <div className="mb-4 overflow-hidden border rounded-xl bg-base-100">
+              <img
+                src={noImage.image_path}
                 className="w-full h-[420px] object-cover"
               />
             </div>
@@ -26,7 +35,7 @@ const Show = ({project}) => {
 
           {/* Thumbnails */}
           <div className="grid grid-cols-4 gap-3">
-            {photos.map(photo => (
+            {photos.length > 0 && photos.map(photo => (
               <button
                 key={photo.id}
                 onClick={() => setActivePhoto(photo)}

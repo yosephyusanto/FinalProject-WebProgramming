@@ -50,11 +50,6 @@ class MaterialListingFactory extends Factory
             ]),
             'location' => $this->faker->city(),
             'status' => 'available',
-            'pricing_type' => $pricing_type,
-            'price' => $pricing_type === 'free' ? 0 : $this->faker->randomFloat(2, 10000, 1000000),
-            'currency' => 'IDR',
-            'stock' => $this->faker->numberBetween(1, 20),
-            'is_active' => true,
             'pickup_window_start' => now()->addDays(rand(1, 3)),
             'pickup_window_end' => now()->addDays(rand(4, 7)),
 
@@ -65,7 +60,6 @@ class MaterialListingFactory extends Factory
     {
         return $this->state(fn () => [
             'status' => 'available',
-            'is_active' => true,
         ]);
     }
 
@@ -73,8 +67,6 @@ class MaterialListingFactory extends Factory
     {
         return $this->state(fn () => [
             'status' => 'claimed',
-            'is_active' => true,
-            'stock' => 0,
         ]);
     }
 
@@ -82,7 +74,6 @@ class MaterialListingFactory extends Factory
     {
         return $this->state(fn () => [
             'status' => 'completed',
-            'is_active' => false,
         ]);
     }
 }

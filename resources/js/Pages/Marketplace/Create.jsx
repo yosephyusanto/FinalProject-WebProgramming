@@ -68,26 +68,6 @@ const Create = () => {
         </div>
         
         <div className='flex gap-x-8'>
-          <div className='flex-1'>
-            <select name="pricing_type" value={data.pricing_type} onChange={e => setData('pricing_type', e.target.value)} className='w-full p-2 border'>
-              <option value="fixed">Fixed</option>
-              <option value="negotiable">Negotiable</option>
-              <option value="free">Free</option>
-            </select>
-            {errors.pricing_type && <div className='text-red-600'>{errors.pricing_type}</div>}
-          </div>
-          <div className='flex-1'>
-            <input type="number" placeholder='price in IDR' value={data.price} onChange={e => setData('price', e.target.value)} className='w-full p-2 border' disabled={data.pricing_type === 'free'}/>
-            {errors.price && <div className='text-red-600'>{errors.price}</div>}
-          </div>
-        </div>
-
-        <div>
-          <input type="number" placeholder='stock (number only)' value={data.stock} onChange={e => setData('stock', e.target.value)} className='w-full p-2 border'/>
-          {errors.stock && <div className='text-red-600'>{errors.stock}</div>}
-        </div>
-
-        <div className='flex gap-x-8'>
           <div className='flex-1 space-y-2'>
             <label>Pickup Window Start</label>
             <input type="datetime-local" value={data.pickup_window_start} onChange={e => setData('pickup_window_start', e.target.value)} className='w-full p-2 border'/>

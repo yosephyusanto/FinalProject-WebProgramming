@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     ClaimController,
     MessageController,
     SavedSearchController,
-    GalleryProjectController
+    GalleryProjectController,
+    MyGalleryController
 };
 use Inertia\Inertia;
 
@@ -19,6 +20,12 @@ Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, '
 
 Route::get('/marketplace', [MaterialListingController::class, 'index'])
     ->name('marketplace.index');
+
+// Community Gallery
+Route::get('/gallery', [GalleryProjectController::class, 'index'])
+    ->name('gallery.index');
+Route::get('/gallery/{galleryProject}', [GalleryProjectController::class, 'show'])
+    ->name('gallery.show');
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
@@ -46,15 +53,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/searches', [SavedSearchController::class, 'store'])
         ->name('searches.store');
     
-    // Gallery
-    Route::get('/gallery', [GalleryProjectController::class, 'index'])
-        ->name('gallery.index');
-    Route::get('/gallery/create', [GalleryProjectController::class, 'create'])
-        ->name('gallery.create');
-    Route::post('/gallery', [GalleryProjectController::class, 'store'])
-        ->name('gallery.store');
-    Route::get('/gallery/{galleryProject}', [GalleryProjectController::class, 'show'])
-        ->name('gallery.show');
+    // My Gallery
+    Route::get('/my-gallery', [MyGalleryController::class, 'index'])->name('my-gallery.index');
+    Route::get('/my-gallery/create', [MyGalleryController::class, 'create'])->name('my-gallery.create');
+    Route::post('/my-gallery', [MyGalleryController::class, 'store'])->name('my-gallery.store');
+    Route::get('/my-gallery/{galleryProject}/edit', [MyGalleryController::class, 'edit'])->name('my-gallery.edit');
+    Route::put('/my-gallery/{galleryProject}', [MyGalleryController::class, 'update'])->name('my-gallery.update');
+    Route::delete('/my-gallery/{galleryProject}', [MyGalleryController::class, 'destroy'])->name('my-gallery.destroy');
+
 });
 
 // Public routes

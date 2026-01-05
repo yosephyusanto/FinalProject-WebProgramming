@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('material_listing_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
             $table->integer('order')->default(0);
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
             
             $table->index('material_listing_id');
         });

@@ -27,4 +27,5 @@ class GalleryPhoto extends Model
     public function galleryProject():BelongsTo{
         return $this->belongsTo(GalleryProject::class);
     }
+
 }

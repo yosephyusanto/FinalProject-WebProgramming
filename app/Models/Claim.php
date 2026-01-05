@@ -12,13 +12,9 @@ class Claim extends Model
     protected $fillable = [
         'material_listing_id',
         'claimed_by_user_id',
-        'status',
-        'price_at_purchase',
-        'quantity'
+        'status'
     ];
-
-    protected $casts = ['status' => 'string'];
-
+    
     // Relationships
     public function materialListing():BelongsTo{
         return $this->belongsTo(MaterialListing::class);

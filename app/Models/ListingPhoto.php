@@ -14,7 +14,6 @@ class ListingPhoto extends Model
         'order'
     ];
 
-    // otomatis dipanggil saat model diserialize ke JSON
     protected $appends = ['image_url'];
     public function getImageUrlAttribute(): string
     {
@@ -22,7 +21,6 @@ class ListingPhoto extends Model
     }
 
     public $timestamps = false;
-    protected $casts = ['created_at' => 'datetime'];
 
     // relationships
     public function materialListing():BelongsTo{

@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import { useForm, usePage } from '@inertiajs/react'
-import AppLayout from '../../Layouts/AppLayout'
+import AppLayout from '../../../Layouts/AppLayout'
+import {route} from 'ziggy-js'
 
 const Create = ({userListings}) => {
   const {data, setData, post, processing, errors} = useForm({
@@ -14,14 +15,15 @@ const Create = ({userListings}) => {
 
   const submit = (e) => {
     e.preventDefault()
-    post(route('gallery.store'))
+    post(route('my-gallery.store'))
   }
 
   const handlePhotosChange = (e) => {
     const files = Array.from(e.target.files)
 
-    if (files.length > 5) {
-      alert('Max 5 photos allowed')
+    if (files.length > 4) {
+      alert('Max 4 photos allowed')
+      e.target.value = null
       return
     }
 
