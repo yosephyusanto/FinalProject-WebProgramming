@@ -1,15 +1,97 @@
-  import React from 'react'
+  import {useState} from 'react'
   import AppLayout from '../../Layouts/AppLayout'
-  import { Link } from '@inertiajs/react'
+  import { Link, router } from '@inertiajs/react'
+  import { route } from 'ziggy-js'
 
   const Index = ({listings, filters}) => {
-    console.log(listings)
+    // console.log(listings)
+    const [form, setForm] = useState({
+      material_type: filters.material_type || '',
+      color: filters.color || '',
+      location: filters.location || '',
+    })
+
+    const submit = (e) => {
+      e.preventDefault()
+      router.get(route('marketplace.index'), form, {
+        preserveState: true,
+        preserveScroll: true,
+      })
+    }
+
+    const handleSaveSearch = () => {
+      const name = prompt('Name this search:')
+      if (!name) return
+
+      router.post(route('saved-searches.store'), {
+        name,
+        material_type: filters.material_type,
+        color: filters.color,
+        location: filters.location,
+      })
+    }
+    
     return (
       <>
         <div>
           <h1 className='mt-6 mb-6 text-4xl font-bold text-center'>Marketplace</h1>
           <p className='text-center px-36'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic iure, repellat dolorem officiis incidunt vel obcaecati similique maxime in aliquid eveniet voluptate esse temporibus molestias delectus enim provident ratione illo?</p>  
         </div>
+
+        {/* Search and Filters */}
+        <form onSubmit={submit} className="flex flex-wrap justify-center gap-4 mt-8 mb-8">
+          <input
+            type="text"
+            placeholder="Material type"
+            className="w-48 input input-bordered"
+            value={form.material_type}
+            onChange={e => setForm({ ...form, material_type: e.target.value })}
+          />
+
+          <input
+            type="text"
+            placeholder="Color"
+            className="w-48 input input-bordered"
+            value={form.color}
+            onChange={e => setForm({ ...form, color: e.target.value })}
+          />
+
+          <input
+            type="text"
+            placeholder="Location"
+            className="w-48 input input-bordered"
+            value={form.location}
+            onChange={e => setForm({ ...form, location: e.target.value })}
+          />
+
+          <button className="btn btn-primary">
+            Search
+          </button>
+
+          {(filters.material_type || filters.color || filters.location) && (
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={() => router.get(route('marketplace.index'))}
+            >
+              Reset
+            </button>
+          )}
+        </form>
+        
+        {/* Save Search Button */}
+        {(filters.material_type || filters.color || filters.location) && (
+          <div className='flex justify-center'>
+            <button
+              type="button"
+              className="btn btn-outline btn-success"
+              onClick={handleSaveSearch}
+            >
+              Save this search
+            </button>
+          </div>
+        )}
+
         <div className='grid grid-cols-1 gap-6 mx-auto mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-7xl'>
           {listings.data.map(listing => (
             <div key={listing.id} className='w-full overflow-hidden bg-white rounded shadow-md cursor-pointer' >

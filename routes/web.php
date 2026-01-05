@@ -10,6 +10,9 @@ use App\Http\Controllers\{
     MyGalleryController
 };
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Broadcast;
+
+Broadcast::routes(['middleware' => ['auth']]);
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
@@ -52,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('searches.index');
     Route::post('/searches', [SavedSearchController::class, 'store'])
         ->name('searches.store');
+    Route::post('/saved-searches/{search}/toggle', [SavedSearchController::class, 'toggle'])
+        ->name('saved-searches.toggle');
+    Route::delete('/saved-searches/{search}', [SavedSearchController::class, 'destroy'])
+        ->name('saved-searches.destroy');
+
     
     // My Gallery
     Route::get('/my-gallery', [MyGalleryController::class, 'index'])->name('my-gallery.index');

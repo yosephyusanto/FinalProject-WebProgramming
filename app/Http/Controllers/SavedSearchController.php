@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SavedSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 
 class SavedSearchController extends Controller
 {
+    use AuthorizesRequests;
+
     //Show user's saved searches
     public function index(){
         // Auth : only takers can access
@@ -52,4 +56,24 @@ class SavedSearchController extends Controller
 
         return back()->with('success', 'Search saved! You will get notifications for matching listings.');
     }
+
+    public function toggle(SavedSearch $search)
+    {
+        $this->authorize('update', $search);
+
+        $search->update([
+            'is_active' => ! $search->is_active
+        ]);
+
+        return back();
+    }
+
+    public function destroy(SavedSearch $search)
+    {
+        $this->authorize('delete', $search);
+        $search->delete();
+
+        return back();
+    }
+
 }

@@ -14,3 +14,8 @@ Broadcast::channel('claims.{claimId}', function ($user, $claimId) {
     return $claim->claimed_by_user_id === $user->id
         || $claim->materialListing->user_id === $user->id;
 });
+
+// Notifications
+Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});

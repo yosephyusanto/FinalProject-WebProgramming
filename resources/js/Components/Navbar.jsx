@@ -1,10 +1,29 @@
 import {Link, usePage} from '@inertiajs/react';
-import React from 'react'
 import { route } from 'ziggy-js';
+import { useEffect, useState } from 'react'
+
 
 const Navbar = () => {
   const {auth} = usePage().props
   const user = auth?.user
+  const [notifications, setNotifications] = useState(
+    auth?.notifications || []
+  )
+
+  useEffect(() => {
+    if (!user) return
+
+    window.Echo.private(`App.Models.User.${user.id}`)
+      .notification((notification) => {
+        setNotifications(prev => [notification, ...prev])
+      })
+
+    return () => {
+      window.Echo.leave(`private-App.Models.User.${user.id}`)
+    }
+  }, [user])
+
+
   const navLinkClass = "text-sm font-medium text-gray-700 hover:text-black transition-colors"
 
   return (
