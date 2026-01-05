@@ -175,8 +175,18 @@ class MyGalleryController extends Controller
     public function destroy(GalleryProject $galleryProject)
     {
         $this->authorize('delete', $galleryProject);
+
+        // hapus file di public/storage/gallery-projects/
+        foreach ($galleryProject->photos as $photo) {
+            if (Storage::disk('public')->exists($photo->image_path)) {
+                Storage::disk('public')->delete($photo->image_path);
+            }
+        }
+        
         $galleryProject->delete();
 
-        return redirect()->route('my-gallery.index');
+        return redirect()
+            ->route('my-gallery.index')
+            ->with('success', 'Project deleted successfully');
     }    
 }
