@@ -62,7 +62,7 @@ class User extends Authenticatable
     }
 
     public function receivedMessages(){
-        return $this->hasMany(Message::class, 'sender_id');
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
     public function savedSearches(){
