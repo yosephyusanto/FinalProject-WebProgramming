@@ -69,46 +69,46 @@
 
     
  const submit = (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  const existing_photos = images
-    .filter(i => i.type === 'existing')
-    .map((img, order) => ({
-      id: img.id,
-      order,
-    }))
+    const existing_photos = images
+      .filter(i => i.type === 'existing')
+      .map((img, order) => ({
+        id: img.id,
+        order,
+      }))
 
-  const new_photos = images
-    .filter(i => i.type === 'new')
-    .map(img => img.file)
+    const new_photos = images
+      .filter(i => i.type === 'new')
+      .map(img => img.file)
 
-  const formData = new FormData()
-  
-  formData.append('_method', 'PUT')
-  formData.append('title', data.title)
-  formData.append('description', data.description)
-  formData.append('material_listing_id', data.material_listing_id || '')
-  
-  // Append existing photos
-  existing_photos.forEach((photo, index) => {
-    formData.append(`existing_photos[${index}][id]`, photo.id)
-    formData.append(`existing_photos[${index}][order]`, photo.order)
-  })
-  
-  // Append deleted IDs
-  deletedIds.forEach((id, index) => {
-    formData.append(`deleted_photo_ids[${index}]`, id)
-  })
-  
-  // Append new photos
-  new_photos.forEach((file, index) => {
-    formData.append(`new_photos[${index}]`, file)
-  })
+    const formData = new FormData()
+    
+    formData.append('_method', 'PUT')
+    formData.append('title', data.title)
+    formData.append('description', data.description)
+    formData.append('material_listing_id', data.material_listing_id || '')
+    
+    // Append existing photos
+    existing_photos.forEach((photo, index) => {
+      formData.append(`existing_photos[${index}][id]`, photo.id)
+      formData.append(`existing_photos[${index}][order]`, photo.order)
+    })
+    
+    // Append deleted IDs
+    deletedIds.forEach((id, index) => {
+      formData.append(`deleted_photo_ids[${index}]`, id)
+    })
+    
+    // Append new photos
+    new_photos.forEach((file, index) => {
+      formData.append(`new_photos[${index}]`, file)
+    })
 
-  router.post(route('my-gallery.update', project.id), formData, {
-    forceFormData: true,
-  })
-}
+    router.post(route('my-gallery.update', project.id), formData, {
+      forceFormData: true,
+    })
+  }
 
     return (
       <>
