@@ -23,7 +23,7 @@
       const name = prompt('Name this search:')
       if (!name) return
 
-      router.post(route('saved-searches.store'), {
+      router.post(route('searches.store'), {
         name,
         material_type: filters.material_type,
         color: filters.color,

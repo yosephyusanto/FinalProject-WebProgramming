@@ -67,7 +67,7 @@ const Create = () => {
           {errors.location && <div className='text-red-600'>{errors.location}</div>}
         </div>
         
-        <div className='flex gap-x-8'>
+        <div className='flex-col md:flex md:flex-row gap-x-8'>
           <div className='flex-1 space-y-2'>
             <label>Pickup Window Start</label>
             <input type="datetime-local" value={data.pickup_window_start} onChange={e => setData('pickup_window_start', e.target.value)} className='w-full p-2 border'/>

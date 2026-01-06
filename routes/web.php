@@ -69,6 +69,23 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/my-gallery/{galleryProject}', [MyGalleryController::class, 'update'])->name('my-gallery.update');
     Route::delete('/my-gallery/{galleryProject}', [MyGalleryController::class, 'destroy'])->name('my-gallery.destroy');
 
+    // Notifications
+    Route::post('/notifications/{id}/read', function ($id) {
+        \Illuminate\Support\Facades\Auth::user()
+            ->notifications()
+            ->where('id', $id)
+            ->firstOrFail()
+            ->markAsRead();
+
+        return back();
+    })->name('notifications.read');
+
+
+    Route::post('/notifications/read-all', function () {
+        \Illuminate\Support\Facades\Auth::user()->unreadNotifications->markAsRead();
+        return back();
+    })->name('notifications.readAll');
+
 });
 
 // Public routes

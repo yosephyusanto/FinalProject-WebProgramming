@@ -58,4 +58,15 @@ class SavedSearchMatchedNotification extends Notification
             'search_name' => $this->search->name,
         ];
     }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'listing_id' => $this->listing->id,
+            'title' => 'New listing matches your saved search',
+            'message' => $this->listing->title,
+            'url' => route('marketplace.show', $this->listing),
+        ];
+    }
+
 }

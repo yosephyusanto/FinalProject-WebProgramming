@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MaterialListingCreated;
+use App\Events\NewMatchingListing;
 use Illuminate\Http\Request;
 use App\Models\MaterialListing;
 use App\Models\SavedSearch;
@@ -92,20 +93,17 @@ class MaterialListingController extends Controller
         }
 
         // notification trigger
-        // $this->notifyMatchingSearches($listing);
-
-        // Trigger event
-        event(new MaterialListingCreated($listing));
+        $this->notifyMatchingSearches($listing);
         return redirect()->route('marketplace.show', $listing)->with('success', 'Listing created successfully!');
     }
 
-    // private function notifyMatchingSearches(MaterialListing $listing){
-    //     $matchingSearches = SavedSearch::where('is_active', true)->get()
-    //     ->filter(fn($search) => $search->matchesListing($listing));
+    private function notifyMatchingSearches(MaterialListing $listing){
+        $matchingSearches = SavedSearch::where('is_active', true)->get()
+        ->filter(fn($search) => $search->matchesListing($listing));
 
-    //     foreach($matchingSearches as $search){
-    //         // this will trigger the websocket event
-    //         event(new \App\Events\NewMatchingListing($search->user, $listing));
-    //     }
-    // }
+        foreach($matchingSearches as $search){
+            // this will trigger the websocket event
+            event(new NewMatchingListing($listing, $search->user->id));
+        }
+    }
 }

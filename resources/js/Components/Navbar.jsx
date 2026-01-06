@@ -1,6 +1,7 @@
 import {Link, usePage} from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import { useEffect, useState } from 'react'
+import NotificationDropdown from './NotificationDropdown';
 
 
 const Navbar = () => {
@@ -11,17 +12,29 @@ const Navbar = () => {
   )
 
   useEffect(() => {
-    if (!user) return
+    if (!user) return;
 
-    window.Echo.private(`App.Models.User.${user.id}`)
-      .notification((notification) => {
-        setNotifications(prev => [notification, ...prev])
-      })
+    const channel = `users.${user.id}`;
+
+    window.Echo.private(channel)
+      .listen('.App\\Events\\NewMatchingListing', (event) => {
+        setNotifications(prev => [
+          {
+            id: event.listing_id,
+            title: event.title,
+            material_type: event.material_type,
+            from_user: event.user_name,
+            read_at: null
+          },
+          ...prev
+        ]);
+      });
 
     return () => {
-      window.Echo.leave(`private-App.Models.User.${user.id}`)
-    }
-  }, [user])
+      window.Echo.leave(`private-${channel}`);
+    };
+  }, [user]);
+
 
 
   const navLinkClass = "text-sm font-medium text-gray-700 hover:text-black transition-colors"
@@ -70,6 +83,12 @@ const Navbar = () => {
           
           {/* Auth Buttons or User Info */}
           <div className='flex items-center space-x-4'>
+            {user && (
+              <NotificationDropdown
+                notifications={notifications}
+                setNotifications={setNotifications}
+              />
+            )}
             {user ? (
               <>
                 <span>Hi, {user.name}</span>

@@ -24,4 +24,14 @@ class NewMatchingListing implements ShouldBroadcast
     {
         return new PrivateChannel('users.' . $this->userId);
     }
+
+    public function broadcastWith()
+    {
+        return [
+            'listing_id' => $this->listing->id,
+            'title' => $this->listing->title,
+            'material_type' => $this->listing->material_type,
+            'user_name' => $this->listing->user->name,
+        ];
+    }
 }
