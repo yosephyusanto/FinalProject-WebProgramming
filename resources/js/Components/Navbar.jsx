@@ -126,7 +126,7 @@ useEffect(() => {
           
           {/* Auth Buttons or User Info */}
           <div className='flex items-center space-x-4'>
-            {user && (
+            {user?.role == 'taker' && (
               <NotificationDropdown
                 notifications={notifications}
                 setNotifications={setNotifications}

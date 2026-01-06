@@ -62,6 +62,28 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
             </button>
           </li>
         ))}
+
+        {/* Mark all as read */}
+        {notifications.length > 0 && unreadCount > 0 && (
+          <li className="mb-1">
+            <button
+              className="w-full text-xs text-right text-primary"
+              onClick={() => {
+                router.post(route('notifications.readAll'), {}, {
+                  preserveScroll: true,
+                  onSuccess: () => {
+                    setNotifications(prev =>
+                      prev.map(n => ({ ...n, read_at: new Date() }))
+                    )
+                  }
+                })
+              }}
+            >
+              Mark all as read
+            </button>
+          </li>
+        )}
+
       </ul>
     </div>
   )
