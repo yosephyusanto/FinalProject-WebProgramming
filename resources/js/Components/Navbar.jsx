@@ -52,20 +52,21 @@ useEffect(() => {
     channel.listen('.SavedSearchMatched', (data) => {
         console.log('SavedSearchMatched event received:', data);
         
-        // const newNotification = {
-        //   id: Date.now(),
-        //   data: {
-        //     listing_id: data.listing_id,
-        //     title: data.title,
-        //     message: data.message,
-        //     url: data.url,
-        //     search_name: data.search_name,
-        //   },
-        //   read_at: null,
-        //   created_at: new Date().toISOString(),
-        // };
+         const normalizedNotification = {
+          id: data.id,
+          type: data.type ?? 'App\\Notifications\\SavedSearchMatchedNotification',
+          data: {
+            listing_id: data.listing_id,
+            title: data.title,
+            message: data.message,
+            url: data.url,
+            search_name: data.search_name,
+          },
+          read_at: null,
+          created_at: new Date().toISOString(),
+        };
         
-        setNotifications(prev => [notification, ...prev]);
+        setNotifications(prev => [normalizedNotification, ...prev]);
     });
 
     // Error handling
