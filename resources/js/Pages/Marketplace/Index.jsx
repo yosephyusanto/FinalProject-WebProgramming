@@ -94,16 +94,30 @@
 
         <div className='grid grid-cols-1 gap-6 mx-auto mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-7xl'>
           {listings.data.map(listing => (
-            <div key={listing.id} className='w-full overflow-hidden bg-white rounded shadow-md cursor-pointer' >
+            <div key={listing.id} className='w-full overflow-hidden bg-white rounded-lg shadow-md border hover:shadow-lg transition-shadow'>
               <Link href={`/listings/${listing.id}`} className="block">
                 {/* image */}
                 <div className='relative w-full h-64'>
-                  <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full rounded-t'/>
+                  <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full'/>
+                  {/* Status */}
+                  <div className='absolute top-2 left-2'>
+                    <span className={`
+                      px-2 py-1 rounded-full text-xs font-semibold
+                      ${listing.stats === 'available' && 'bg-green-100 text-green-800'}
+                      ${listing.stats === 'claimed' && 'bg-yellow-100 text-yellow-800'}
+                      ${listing.stats === 'completed' && 'bg-green-100 text-green-8600'}
+                    `}>{listing.status.toUpperCase()}</span>
+                  </div>
                 </div>
                 {/* content */}
                 <div className='p-4'>
-                  <p className='font-semibold'>{listing.title}</p>
+                  <h3 className='font-semibold'>{listing.title}</h3>
                   <p className='text-sm text-gray-400'>{listing.description}</p>
+                  
+                  <div className='flex justify-between text-sm text-gray-500'>
+                    <span>{listing.material_type}</span>
+                    <span>{listing.location}</span>
+                  </div>
                 </div>
               </Link>
             </div>

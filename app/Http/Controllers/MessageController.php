@@ -6,6 +6,7 @@ use App\Models\Claim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\NewMessage;
+use Inertia\Inertia;
 
 class MessageController extends Controller
 {
@@ -32,5 +33,22 @@ class MessageController extends Controller
         broadcast(new NewMessage($message))->toOthers();
 
         return back(); //Inertia will handle the update
+    }
+
+    public function index(Request $request){
+        $user = $request->user();
+        
+        //Get all claims for all users (Giver or Taker)
+        $claims = Claim::where(function($query) use ($user){
+            $query->where('claimed_by_user_id', $user->id)
+            ->orWhereHas('materialListing', function($q) use ($user){
+                $q->where('user_id', $user->id);
+            });
+        })->with(['materialListing.photos', 'materialListing.user', 'claimedBy', 'messages' => function($q){
+            $q->latest()->limit(1);
+        }])
+        ->latest()->paginate(12);
+        
+        return Inertia::render('Messages/Index', ['claims' => $claims]);
     }
 }

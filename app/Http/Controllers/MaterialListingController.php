@@ -35,9 +35,12 @@ class MaterialListingController extends Controller
     public function show(MaterialListing $materialListing)
     {
         $materialListing->load(['user', 'photos', 'claim']); // eager load relationships
+        $user = Auth::user();
+        // /**@var App\Models\User $user */
         // dd($materialListing);
         return Inertia::render('Marketplace/Show', [
-            'listing' => $materialListing
+            'listing' => $materialListing,
+            'auth' => ['user' => $user],
         ]);
     }
 
@@ -108,4 +111,22 @@ class MaterialListingController extends Controller
     //         event(new \App\Events\NewMatchingListing($search->user, $listing));
     //     }
     // }
+
+    public function myProducts(Request $request){
+        $user = $request->user();
+
+        if(!$user->isGiver()){
+            return redirect()->route('marketplace.index')
+            ->with('error', 'Only givers can view this listings.');
+        }
+
+        $listings = $user->materialListings()
+        ->with(['user', 'photos', 'claim.claimedBy'])
+        ->latest()
+        ->paginate(12);
+
+        return Inertia::render('Marketplace/MyProducts', [
+            'listings' => $listings
+        ]);
+    }
 }
