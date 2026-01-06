@@ -51,7 +51,7 @@ const Index = ({ searches }) => {
               <button
                 className="btn btn-sm"
                 onClick={() =>
-                  router.patch(route('saved-searches.toggle', search.id))
+                  router.post(route('saved-searches.toggle', search.id))
                 }
               >
                 {search.is_active ? 'Disable' : 'Enable'}

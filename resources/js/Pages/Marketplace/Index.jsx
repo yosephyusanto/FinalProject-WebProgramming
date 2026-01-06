@@ -1,9 +1,12 @@
   import {useState} from 'react'
   import AppLayout from '../../Layouts/AppLayout'
-  import { Link, router } from '@inertiajs/react'
+  import { Link, router , usePage} from '@inertiajs/react'
   import { route } from 'ziggy-js'
 
   const Index = ({listings, filters}) => {
+    const {auth} = usePage().props
+    const user = auth?.user
+    
     // console.log(listings)
     const [form, setForm] = useState({
       material_type: filters.material_type || '',
@@ -80,7 +83,7 @@
         </form>
         
         {/* Save Search Button */}
-        {(filters.material_type || filters.color || filters.location) && (
+        {(filters.material_type || filters.color || filters.location) &&  user?.role === 'taker' && (
           <div className='flex justify-center'>
             <button
               type="button"

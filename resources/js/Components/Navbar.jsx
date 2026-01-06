@@ -11,31 +11,73 @@ const Navbar = () => {
     auth?.notifications || []
   )
 
-  useEffect(() => {
+useEffect(() => {
+    console.log('Initial notifications:', notifications);
+
     if (!user) return;
 
-    const channel = `users.${user.id}`;
+    const channelName = `users.${user.id}`;
+    console.log('Subscribing to channel:', channelName);
 
-    window.Echo.private(channel)
-      .listen('.App\\Events\\NewMatchingListing', (event) => {
-        setNotifications(prev => [
-          {
-            id: event.listing_id,
-            title: event.title,
-            material_type: event.material_type,
-            from_user: event.user_name,
-            read_at: null
-          },
-          ...prev
-        ]);
-      });
+    // Subscribe ke channel
+    const channel = window.Echo.private(channelName);
+    
+    // Check jika berhasil subscribe
+    channel.subscribed(() => {
+        console.log('Successfully subscribed to:', channelName);
+    });
+
+    // Listen ke notification broadcast
+    // Format: .Illuminate\\Notifications\\Events\\BroadcastNotificationCreated
+    channel.notification((notification) => {
+        console.log('Notification received:', notification);
+        
+        // const newNotification = {
+        //   id: notification.id || Date.now(),
+        //   data: {
+        //     listing_id: notification.listing_id,
+        //     title: notification.title,
+        //     message: notification.message,
+        //     url: notification.url,
+        //     search_name: notification.search_name,
+        //   },
+        //   read_at: null,
+        //   created_at: new Date().toISOString(),
+        // };
+        
+        setNotifications(prev => [notification, ...prev]);
+    });
+
+    // Atau jika pakai broadcastAs, listen seperti ini:
+    channel.listen('.SavedSearchMatched', (data) => {
+        console.log('SavedSearchMatched event received:', data);
+        
+        // const newNotification = {
+        //   id: Date.now(),
+        //   data: {
+        //     listing_id: data.listing_id,
+        //     title: data.title,
+        //     message: data.message,
+        //     url: data.url,
+        //     search_name: data.search_name,
+        //   },
+        //   read_at: null,
+        //   created_at: new Date().toISOString(),
+        // };
+        
+        setNotifications(prev => [notification, ...prev]);
+    });
+
+    // Error handling
+    channel.error((error) => {
+        console.error('Channel error:', error);
+    });
 
     return () => {
-      window.Echo.leave(`private-${channel}`);
+      console.log('Leaving channel:', channelName);
+      window.Echo.leave(channelName);
     };
-  }, [user]);
-
-
+  }, [user?.id]);
 
   const navLinkClass = "text-sm font-medium text-gray-700 hover:text-black transition-colors"
 

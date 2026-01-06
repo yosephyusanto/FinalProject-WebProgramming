@@ -29,7 +29,7 @@ const Show = ({listing}) => {
           {/* image carousel*/}
           <div className='w-[380px] h-[380px] overflow-hidden rounded-lg'>
             <div>
-              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product"  className='border rounded-xl'/>
+              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : '/images/no_image.jpg'} alt="product"  className='border rounded-xl'/>
             </div>
           </div>
           
@@ -38,10 +38,10 @@ const Show = ({listing}) => {
             <span className={`
                 px-3 py-1 rounded-full text-sm font-semibold
               ${listing.status === 'available' && 'bg-green-100 text-green-700'}
-              ${listing.status === 'reserved' && 'bg-yellow-100 text-yellow-700'}
-              ${listing.status === 'sold' && 'bg-gray-200 text-gray-600'}
+              ${listing.status === 'claimed' && 'bg-yellow-100 text-yellow-700'}
+              ${listing.status === 'completed' && 'bg-gray-200 text-gray-600'}
             `}>
-              {listing.status}
+              {listing.status} 
             </span>
             <h1 className='text-2xl font-bold'>{listing.title}</h1>
             

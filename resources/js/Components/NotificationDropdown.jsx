@@ -2,7 +2,13 @@ import React from 'react'
 import { router, usePage } from '@inertiajs/react'
 
 const NotificationDropdown = ({notifications, setNotifications}) => {
+  const markAsRead = (id) => {
+    setNotifications(prev =>
+      prev.map(n => n.id === id ? {...n, read_at: new Date()} : n)
+    );
+  };
 
+  console.log('notifications', notifications);
 
   const unreadCount = notifications.filter(n => !n.read_at).length
 
@@ -33,6 +39,7 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
           <li key={notification.id}>
             <button
               onClick={() => {
+                console.log('Visiting notification URL:', notification.data.url);
                 router.post(
                   route('notifications.read', notification.id),
                   {},
@@ -42,6 +49,7 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
                     },
                   }
                 )
+                markAsRead(notification.id);
               }}
               className={`text-left ${
                 !notification.read_at ? 'font-semibold' : ''
