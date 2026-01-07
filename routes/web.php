@@ -7,9 +7,15 @@ use App\Http\Controllers\{
     MessageController,
     SavedSearchController,
     GalleryProjectController,
-    MyGalleryController
+    MyGalleryController,
+    HomeController
 };
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Auth;
+
+
+Broadcast::routes(['middleware' => ['auth']]);
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
@@ -38,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('marketplace.show');
     
     // Claims
-    Route::post('/listings/{materialListing}/claim', [ClaimController::class, 'store'])
+    Route::post('/listings/{listing}/claim', [ClaimController::class, 'store'])
         ->name('claims.store');
     Route::get('/claims/{claim}', [ClaimController::class, 'show'])
         ->name('claims.show');
@@ -52,6 +58,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('searches.index');
     Route::post('/searches', [SavedSearchController::class, 'store'])
         ->name('searches.store');
+    Route::post('/saved-searches/{search}/toggle', [SavedSearchController::class, 'toggle'])
+        ->name('saved-searches.toggle');
+    Route::delete('/saved-searches/{search}', [SavedSearchController::class, 'destroy'])
+        ->name('saved-searches.destroy');
+
     
     // My Gallery
     Route::get('/my-gallery', [MyGalleryController::class, 'index'])->name('my-gallery.index');
@@ -61,16 +72,50 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/my-gallery/{galleryProject}', [MyGalleryController::class, 'update'])->name('my-gallery.update');
     Route::delete('/my-gallery/{galleryProject}', [MyGalleryController::class, 'destroy'])->name('my-gallery.destroy');
 
+    // Notifications
+    Route::post('/notifications/{id}/read', function ($id) {
+        \Illuminate\Support\Facades\Auth::user()
+            ->notifications()
+            ->where('id', $id)
+            ->firstOrFail()
+            ->markAsRead();
+
+        return back();
+    })->name('notifications.read');
+
+
+    Route::post('/notifications/read-all', function () {
+        \Illuminate\Support\Facades\Auth::user()->unreadNotifications->markAsRead();
+        return back();
+    })->name('notifications.readAll');
+
+    // MyProducts and MyClaims and Message
+    Route::get('/my-products', [MaterialListingController::class, 'myProducts'])->name('my-products');
+    Route::get('/my-claims', [ClaimController::class, 'myClaims'])->name('my-claims');
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    
+    Route::post('/claims/{claim}/complete', [ClaimController::class, 'complete'])->name('claims.complete');
+
+    Route::get('/test-plain', function() {
+        $user = Auth::user();
+        // /**@var App\Models\User $user */
+        return response()->json([
+            'message' => 'Plain response test',
+            'user' => $user
+        ]);
+    });
 });
 
 // Public routes
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'stats' => [
-            'listings' => \App\Models\MaterialListing::available()->count(),
-            'projects' => \App\Models\GalleryProject::count(),
-            'impact' => \App\Models\MaterialListing::where('status', 'completed')
-                ->sum('estimated_weight'),
-        ]
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Route::get('/', function () {
+//     return Inertia::render('Home', [
+//         'stats' => [
+//             'listings' => \App\Models\MaterialListing::available()->count(),
+//             'projects' => \App\Models\GalleryProject::count(),
+//             'impact' => \App\Models\MaterialListing::where('status', 'completed')
+//                 ->sum('estimated_weight'),
+//         ]
+//     ]);
+// })->name('home');

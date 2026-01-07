@@ -133,7 +133,7 @@ const Create = ({userListings}) => {
             />
             {images.length > 0 && (
               <div className="mt-4">
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                   {images.map((img, index) => (
                     <div
                       key={img.id}

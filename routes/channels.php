@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Broadcast;
 use App\Models\Claim;
 
+Broadcast::channel('users.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+
 Broadcast::channel('claims.{claimId}', function ($user, $claimId) {
     $claim = Claim::find($claimId);
 

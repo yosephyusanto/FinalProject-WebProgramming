@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Claim;
 use Inertia\Inertia;
+use App\Events\NewClaimNotification;
 
 class ClaimController extends Controller
 {
@@ -33,7 +34,7 @@ class ClaimController extends Controller
 
                 // logic : listing must be able to be claimed
                 if(!$listing->canBeClaimed()){
-                    return back()->with('error', 'This listing is no longer available.');
+                    throw new \Exception('This listing is no longer available.');
                 }
 
                 $claim = Claim::createClaim($listing, $user);
@@ -43,8 +44,11 @@ class ClaimController extends Controller
 
                 return $claim;
             });
+
+            // Send notification to giver
+            event(new NewClaimNotification($claim));
                 
-            return redirect()->route('claims.show', $claim)
+            return redirect()->route('messages.index')
             ->with('success', 'Listing claimed succesfully! You can now coordinate pickup.');
         }catch(\Exception $e){
             return back()->with('error', $e->getMessage());
@@ -67,6 +71,38 @@ class ClaimController extends Controller
             'authUserId' => Auth::id(),
             'otherUser' => $claim->claimed_by_user_id === Auth::id() ? $claim->materialListing->user : $claim->claimedBy
         ]);
+    }
+
+    public function myClaims(Request $request){
+        $user = $request->user();
+
+        $claims = Claim::where('claimed_by_user_id', $user->id)
+        ->with(['materialListing.photos', 'materialListing.user'])
+        ->latest()
+        ->paginate(12);
+
+        return Inertia::render('Claims/MyClaims', [
+            'claims' => $claims
+        ]);
+    }
+
+    public function complete(Request $request, Claim $claim){
+        // Auth: Only giver can complete a claim
+        if($claim->materialListing->user_id !== Auth::id()){
+            abort(403, 'Unathorized. Only the listing owner can complete claims.');
+        }
+
+        // Can only complete a pending or confirmed claims
+        if(!in_array($claim->status, ['pending', 'confirmed'])){
+            return back()->with('error', 'This claim cannot be marked as complete.');
+        }
+
+        DB::transaction(function () use ($claim){
+            $claim->update(['status' => 'completed']);
+            $claim->materialListing->update(['status' => MaterialListing::STATUS_COMPLETED]);
+        });
+
+        return back()->with('success', 'Claim marked as completed successfully!');
     }
 }
 

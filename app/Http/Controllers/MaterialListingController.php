@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MaterialListingCreated;
+use App\Events\NewMatchingListing;
 use Illuminate\Http\Request;
 use App\Models\MaterialListing;
 use App\Models\SavedSearch;
@@ -13,7 +15,7 @@ class MaterialListingController extends Controller
     //Display marketplace
     public function index(Request $request){
         $query = MaterialListing::query()
-        ->where('status', 'available')
+        // ->where('status', 'available')
         ->with(['user', 'photos'])
         ->latest();
         
@@ -34,9 +36,12 @@ class MaterialListingController extends Controller
     public function show(MaterialListing $materialListing)
     {
         $materialListing->load(['user', 'photos', 'claim']); // eager load relationships
+        $user = Auth::user();
+        // /**@var App\Models\User $user */
         // dd($materialListing);
         return Inertia::render('Marketplace/Show', [
-            'listing' => $materialListing
+            'listing' => $materialListing,
+            'auth' => ['user' => $user],
         ]);
     }
 
@@ -91,17 +96,25 @@ class MaterialListingController extends Controller
         }
 
         // notification trigger
-        $this->notifyMatchingSearches($listing);
+        event(new NewMatchingListing($listing, $listing->user_id));
         return redirect()->route('marketplace.show', $listing)->with('success', 'Listing created successfully!');
     }
 
-    private function notifyMatchingSearches(MaterialListing $listing){
-        $matchingSearches = SavedSearch::where('is_active', true)->get()
-        ->filter(fn($search) => $search->matchesListing($listing));
+    public function myProducts(Request $request){
+        $user = $request->user();
 
-        foreach($matchingSearches as $search){
-            // this will trigger the websocket event
-            event(new \App\Events\NewMatchingListing($search->user, $listing));
+        if(!$user->isGiver()){
+            return redirect()->route('marketplace.index')
+            ->with('error', 'Only givers can view this listings.');
         }
+
+        $listings = $user->materialListings()
+        ->with(['user', 'photos', 'claim.claimedBy'])
+        ->latest()
+        ->paginate(12);
+
+        return Inertia::render('Marketplace/MyProducts', [
+            'listings' => $listings
+        ]);
     }
 }
