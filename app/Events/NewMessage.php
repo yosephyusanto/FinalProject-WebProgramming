@@ -8,10 +8,11 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class NewMessage implements ShouldBroadcast
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Message $message;
 
@@ -30,6 +31,10 @@ class NewMessage implements ShouldBroadcast
     {
         // Private chat per claim
         return new PrivateChannel('claims.' . $this->message->claim_id);
+    }
+
+    public function broadcastAs(){
+        return 'newMessage';
     }
 
     /**

@@ -107,7 +107,9 @@ useEffect(() => {
                 <>
                   <Link href={route('home')} className={navLinkClass}>Home</Link>
                   <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
-                  <Link href='' className={navLinkClass}>My Listings</Link>
+                  <Link href={route('listings.create')} className={navLinkClass}>Create Listings</Link>
+                  <Link href={route('my-products')} className={navLinkClass}>My Listings</Link>
+                  <Link href={route('messages.index')} className={navLinkClass}>Messages</Link>
                   <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
                 </>
               )}
@@ -117,6 +119,8 @@ useEffect(() => {
                   <Link href={route('home')} className={navLinkClass}>Home</Link>
                   <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
                   <Link href={route('searches.index')} className={navLinkClass}>Saved Search</Link>
+                  <Link href={route('my-claims')} className={navLinkClass}>My Claims</Link>
+                  <Link href={route('messages.index')} className={navLinkClass}>Message</Link>
                   <Link href={route('my-gallery.index')} className={navLinkClass}>My Gallery</Link>
                   <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
                 </>

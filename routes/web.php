@@ -11,6 +11,8 @@ use App\Http\Controllers\{
 };
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Auth;
+
 
 Broadcast::routes(['middleware' => ['auth']]);
 
@@ -41,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('marketplace.show');
     
     // Claims
-    Route::post('/listings/{materialListing}/claim', [ClaimController::class, 'store'])
+    Route::post('/listings/{listing}/claim', [ClaimController::class, 'store'])
         ->name('claims.store');
     Route::get('/claims/{claim}', [ClaimController::class, 'show'])
         ->name('claims.show');
@@ -86,6 +88,21 @@ Route::middleware(['auth'])->group(function () {
         return back();
     })->name('notifications.readAll');
 
+    // MyProducts and MyClaims and Message
+    Route::get('/my-products', [MaterialListingController::class, 'myProducts'])->name('my-products');
+    Route::get('/my-claims', [ClaimController::class, 'myClaims'])->name('my-claims');
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    
+    Route::post('/claims/{claim}/complete', [ClaimController::class, 'complete'])->name('claims.complete');
+
+    Route::get('/test-plain', function() {
+        $user = Auth::user();
+        // /**@var App\Models\User $user */
+        return response()->json([
+            'message' => 'Plain response test',
+            'user' => $user
+        ]);
+    });
 });
 
 // Public routes
