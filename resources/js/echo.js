@@ -12,7 +12,7 @@ window.Echo = new Echo({
   authEndpoint: '/broadcasting/auth',
   auth: {
     headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content,
+      'X-CSRF-TOKEN': csrfToken,
       'Accept': 'application/json'
     }
   }
