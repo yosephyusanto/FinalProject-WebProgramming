@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     MessageController,
     SavedSearchController,
     GalleryProjectController,
-    MyGalleryController
+    MyGalleryController,
+    HomeController
 };
 use Inertia\Inertia;
 
@@ -64,13 +65,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Public routes
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'stats' => [
-            'listings' => \App\Models\MaterialListing::available()->count(),
-            'projects' => \App\Models\GalleryProject::count(),
-            'impact' => \App\Models\MaterialListing::where('status', 'completed')
-                ->sum('estimated_weight'),
-        ]
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Route::get('/', function () {
+//     return Inertia::render('Home', [
+//         'stats' => [
+//             'listings' => \App\Models\MaterialListing::available()->count(),
+//             'projects' => \App\Models\GalleryProject::count(),
+//             'impact' => \App\Models\MaterialListing::where('status', 'completed')
+//                 ->sum('estimated_weight'),
+//         ]
+//     ]);
+// })->name('home');
