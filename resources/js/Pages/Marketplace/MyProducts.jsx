@@ -15,7 +15,7 @@ const MyProducts = ({listings}) => {
                     <div key={listing.id} className="overflow-hidden bg-white border rounded-lg shadow-md">
                         <Link href={`/listings/${listing.id}`} className="block">
                             <div className="h-48 overflow-hidden">
-                                <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_images.jpg'} 
+                                <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} 
                                 alt={listing.title} className="object-cover w-full h-full" />
                             </div>
 

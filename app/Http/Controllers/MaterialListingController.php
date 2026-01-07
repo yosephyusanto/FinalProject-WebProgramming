@@ -15,7 +15,7 @@ class MaterialListingController extends Controller
     //Display marketplace
     public function index(Request $request){
         $query = MaterialListing::query()
-        ->where('status', 'available')
+        // ->where('status', 'available')
         ->with(['user', 'photos'])
         ->latest();
         
@@ -96,20 +96,9 @@ class MaterialListingController extends Controller
         }
 
         // notification trigger
-        // $this->notifyMatchingSearches($listing);
         event(new NewMatchingListing($listing, $listing->user_id));
         return redirect()->route('marketplace.show', $listing)->with('success', 'Listing created successfully!');
     }
-
-    // private function notifyMatchingSearches(MaterialListing $listing){
-    //     $matchingSearches = SavedSearch::where('is_active', true)->get()
-    //     ->filter(fn($search) => $search->matchesListing($listing));
-
-    //     foreach($matchingSearches as $search){
-    //         // this will trigger the websocket event
-    //         event(new NewMatchingListing($listing, $search->user->id));
-    //     }
-    // }
 
     public function myProducts(Request $request){
         $user = $request->user();

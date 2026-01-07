@@ -38,7 +38,7 @@
       <>
         <div>
           <h1 className='mt-6 mb-6 text-4xl font-bold text-center'>Marketplace</h1>
-          <p className='text-center px-36'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic iure, repellat dolorem officiis incidunt vel obcaecati similique maxime in aliquid eveniet voluptate esse temporibus molestias delectus enim provident ratione illo?</p>  
+          <p className='text-center px-36'>Discover a variety of materials available from other users. Use filters to search by material type, color, and location to meet your needs. You can save your search and we will give you realtime notification once the material that you are looking for is available.</p>  
         </div>
 
         {/* Search and Filters */}
@@ -101,14 +101,14 @@
               <Link href={`/listings/${listing.id}`} className="flex flex-col h-full">
                 {/* image */}
                 <div className='relative w-full h-64'>
-                  <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full'/>
+                  <img src={listing.photos.length > 0 ? listing.photos[0].image_url : '/images/no_image.jpg'} alt={listing.title} className='object-cover w-full h-full'/>
                   {/* Status */}
                   <div className='absolute top-2 left-2'>
                     <span className={`
                       px-2 py-1 rounded-full text-xs font-semibold
-                      ${listing.stats === 'available' && 'bg-green-100 text-green-800'}
-                      ${listing.stats === 'claimed' && 'bg-yellow-100 text-yellow-800'}
-                      ${listing.stats === 'completed' && 'bg-green-100 text-green-8600'}
+                      ${listing.status === 'available' && 'bg-green-100 text-green-800'}
+                      ${listing.status === 'claimed' && 'bg-yellow-100 text-yellow-800'}
+                      ${listing.status === 'completed' && 'bg-green-100 text-green-8600'}
                     `}>{listing.status.toUpperCase()}</span>
                   </div>
                 </div>

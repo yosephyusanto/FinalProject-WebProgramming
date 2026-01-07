@@ -54,7 +54,7 @@ const Show = ({listing, auth, flash}) => {
           <div className='space-y-6'>
             <div className='w-full overflow-hidden border h-96 rounded-xl'>
               {/* Image */}
-              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product"  className='object-cover w-full h-full'/>
+              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : '/images/no_image.jpg'} alt={listing.title}  className='object-cover w-full h-full'/>
             </div>
 
             {/* Claim Section */}
@@ -125,9 +125,9 @@ const Show = ({listing, auth, flash}) => {
             {/* Status Badge */}
             <span className={`
               inline-block px-4 py-2 rounded-full text-sm font-semibold
-              ${listing.stats === 'available' && 'bg-green-100 text-green-700'}
-              ${listing.stats === 'claimed' && 'bg-yellow-100 text-yellow-700'}
-              ${listing.stats === 'completed' && 'bg-green-100 text-green-700'}
+              ${listing.status === 'available' && 'bg-green-100 text-green-700'}
+              ${listing.status === 'claimed' && 'bg-yellow-100 text-yellow-700'}
+              ${listing.status === 'completed' && 'bg-green-100 text-green-700'}
             `}>Status: {listing.status.toUpperCase()}</span>
             
             {/* Title and Owner */}
