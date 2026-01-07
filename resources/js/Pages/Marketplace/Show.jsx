@@ -2,6 +2,7 @@ import React from 'react'
 import AppLayout from '../../Layouts/AppLayout'
 import {route} from 'ziggy-js'
 import { Link, router, usePage } from '@inertiajs/react'
+import ImageCarousel from '../../Components/ImageCarousel'
 
 const Show = ({listing, auth, flash}) => {
   const user = auth?.user
@@ -54,7 +55,7 @@ const Show = ({listing, auth, flash}) => {
           <div className='space-y-6'>
             <div className='w-full overflow-hidden border h-96 rounded-xl'>
               {/* Image */}
-              <img src={listing.photos?.length > 0 ? listing.photos[0].image_url : '/images/no_image.jpg'} alt={listing.title}  className='object-cover w-full h-full'/>
+              <ImageCarousel images={listing.photos} />
             </div>
 
             {/* Claim Section */}
