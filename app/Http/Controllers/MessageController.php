@@ -47,7 +47,7 @@ class MessageController extends Controller
         })->with(['materialListing.photos', 'materialListing.user', 'claimedBy', 'messages' => function($q){
             $q->latest()->limit(1);
         }])
-        ->latest()->paginate(12);
+        ->withCount('messages')->orderBy('updated_at', 'desc')->paginate(12);
         
         return Inertia::render('Messages/Index', ['claims' => $claims]);
     }

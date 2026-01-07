@@ -2,20 +2,47 @@ import { useForm, router } from '@inertiajs/react'
 import { useEffect, useRef, useState } from 'react'
 import  {route} from 'ziggy-js'
 
-const Chat = ({ claimId, messages, authUserId }) => {
+const Chat = ({ claimId, initialMessages, authUserId }) => {
   const bottomRef = useRef(null)
-  const [messageList, setMessagesList] = useState(messages || [])
+  const [messageList, setMessageList] = useState(() => {
+    if(!initialMessages) return []
+
+    if(initialMessages.data && Array.isArray(initialMessages.data)){
+      return initialMessages.data
+    }
+
+    if(Array.isArray(initialMessages)){
+      return initialMessages
+    }
+
+      return []
+  })
   
   const { data, setData, post, reset, processing } = useForm({
     message: '',
   })
 
+  // sinkro untuk perubahan page
+  useEffect(() => {
+    if(!initialMessages) return
+
+    let newMessages = []
+
+    if(initialMessages.data && Array.isArray(initialMessages.data)){
+      newMessages = initialMessages.data
+    }else if(Array.isArray(initialMessages)){
+      newMessages = initialMessages
+    }
+
+    console.log('Syncing...', newMessages.length)
+    setMessageList(newMessages)
+  }, [initialMessages])
+
   // Auto scroll ke bawah
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    bottomRef.current.scrollIntoView({ behavior: 'smooth' })
   }, [messageList])
 
-  // Polling tiap 1 detik
   useEffect(() => {
     if(!window.Echo){
       console.error('Echo not initialized')
@@ -25,32 +52,28 @@ const Chat = ({ claimId, messages, authUserId }) => {
     const channel = window.Echo.private(`claims.${claimId}`)
 
     channel.listen('.newMessage', (event) => {
-      console.log('New message receieved: ', event)
+      setMessageList(prev => {
+        const messageExists = prev.some(msg=> msg.id === event.id)
+        if(messageExists){
+          return prev
+        }
 
-      const messageExist = messageList.some(msg => msg.id === event.id)
-      if(!messageExist){
-        setMessagesList(prev => [...prev, {
-        id: event.id,
-        claim_id: event.claim_id,
-        sender_id: event.sender_id,
-        message: event.message,
-        created_at: event.created_at,
-        sender: event.sender || {id:event.sender_id, name: 'User'}
-      }])
-      }
+        return [...prev, {
+          id: event.id,
+          claim_id: event.claim_id,
+          sender_id: event.sender_id,
+          message: event.message,
+          created_at: event.created_at,
+          sender: event.sender || {id:event.sender_id, name: 'User'}
+          }]
+      })
     })
 
     return () => {
-      channel.stopListening('.NewMessage')
+      channel.stopListening('.newMessage')
       window.Echo.leave(`claims.${claimId}`)
     }
   }, [claimId, messageList])
-
-  useEffect(() => {
-    if(messages && messages.length > 0){
-      setMessagesList(messages)
-    }
-  }, [messages])
 
   const submit = (e) => {
     e.preventDefault()
