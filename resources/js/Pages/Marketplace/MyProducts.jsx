@@ -3,21 +3,25 @@ import AppLayout from '../../Layouts/AppLayout'
 import { Link } from "@inertiajs/react";
 
 const MyProducts = ({listings}) => {
+    console.log('my products listings: ', listings);
     return (
-        <div className="max-w-7xl mx-auto py-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">My Products</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="py-8 mx-auto max-w-7xl">
+            <div className="flex items-center justify-between mb-8">
+                <h1 className="text-3xl font-bold text-gray-900">My Products</h1>
+                 <Link href={route('listings.create')} className="px-4 py-2 text-white bg-black rounded">Create Listings</Link>
+            </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {listings.data.map(listing => (
-                    <div key={listing.id} className="bg-white rounded-lg shadow-md overflow-hidden border">
+                    <div key={listing.id} className="overflow-hidden bg-white border rounded-lg shadow-md">
                         <Link href={`/listings/${listing.id}`} className="block">
                             <div className="h-48 overflow-hidden">
-                                <img src={listing.photo?.length > 0 ? listing.photos[0].image_url : 'images/no_images.jpg'} 
-                                alt={listing.title} className="w-full h-full object-cover" />
+                                <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_images.jpg'} 
+                                alt={listing.title} className="object-cover w-full h-full" />
                             </div>
 
                             <div className="p-4">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-lg truncate">{listing.title}</h3>
+                                <div className="flex items-start justify-between mb-2">
+                                    <h3 className="text-lg font-semibold truncate">{listing.title}</h3>
                                     <span className={`
                                         px-2 py-1 rounded-full text-x font-semibold
                                         ${listing.status === 'available' && 'bg-green-100 text-green-800'}
@@ -26,7 +30,7 @@ const MyProducts = ({listings}) => {
                                     `}>{listing.status}</span>
                                 </div>
 
-                                <p className="text-gray-600 text-sm mb-3 truncate">{listing.descripiton}</p>
+                                <p className="mb-3 text-sm text-gray-600 truncate">{listing.descripiton}</p>
 
                                 <div className="flex justify-between text-sm text-gray-500">
                                     <span>Weight: {listing.estimated_weight}kg</span>
@@ -34,9 +38,9 @@ const MyProducts = ({listings}) => {
                                 </div>
 
                                 {listing.claim && (
-                                    <div className="mt-3 pt-3 border-t">
+                                    <div className="pt-3 mt-3 border-t">
                                         <p className="text-sm text-gray-600">
-                                            Claimed by: <span className="font-semibold">{listing.claim.claimedBy?.name}</span>
+                                            Claimed by: <span className="font-semibold">{listing.claim.claimed_by.name}</span>
                                         </p>
                                     </div>
                                 )}
@@ -47,7 +51,7 @@ const MyProducts = ({listings}) => {
             </div>
             {/* Pagination */}
             {listings.last_page > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
+                <div className="flex justify-center gap-2 mt-8">
                     {listings.links.map((link, index) => (
                         <Link
                         key={index}

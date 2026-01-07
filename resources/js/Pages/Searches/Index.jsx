@@ -3,7 +3,7 @@ import { Link, router } from '@inertiajs/react'
 
 const Index = ({ searches }) => {
   return (
-    <>
+    <div className='px-4 py-10 mx-auto max-w-7xl'>
       <h1 className="mb-6 text-3xl font-bold">Saved Searches</h1>
 
       {searches.length === 0 && (
@@ -70,7 +70,7 @@ const Index = ({ searches }) => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   )
 }
 

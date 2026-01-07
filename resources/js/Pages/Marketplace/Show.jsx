@@ -1,17 +1,14 @@
 import React from 'react'
 import AppLayout from '../../Layouts/AppLayout'
 import {route} from 'ziggy-js'
-import { Link, router } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 
 const Show = ({listing, auth, flash}) => {
-  console.log('=== DEBUG ===');
-  console.log('Auth from props:', auth);
-  console.log('User from auth:', auth?.user);
-  console.log('User role:', auth?.user?.role);
-  console.log('Is taker?', auth?.user?.role === 'taker');
-  console.log('Flash messages:', flash);
-  console.log('=== END DEBUG ===');
-  console.log(listing);
+  const user = auth?.user
+  const isGiver = user?.role === 'giver'
+  const isTaker = user?.role === 'taker'
+  const isAvailable = listing.status === 'available'
+
 
   const formatTime = (dateString) => {
     return new Intl.DateTimeFormat('id-ID', {
@@ -46,18 +43,6 @@ const Show = ({listing, auth, flash}) => {
         console.log('=== Request finished ===');
       }
     })
-
-    // router.post(route('claims.store', {listing: listing.id}), {}, {
-    //   onSuccess: () => {
-    //     // Success will be redirected in the backend
-    //   },
-    //   onError: (errors) => {
-    //     console.error('claim failed:', errors)
-    //     if(errors.message){
-    //       alert(errors.message)
-    //     }
-    //   }
-    // })
   }
 
 
@@ -88,7 +73,43 @@ const Show = ({listing, auth, flash}) => {
                     <li>Arrange the pickup time</li>
                   </ul>
                 </div>
-                {listing.status === 'available' ? (<button onClick={handleClaim} className='w-full px-6 py-3 font-semibold text-white transition-colors bg-black rounded-lg hover:bg-gray-800'>Claim</button>) : listing.status === 'claimed' ? (<button disabled className='w-full px-6 py-3 font-semibold text-white bg-yellow-500 rounded-lg cursor-not-allowed'>Already Claimed</button>) : (<button disabled className='w-full px-6 py-3 font-semibold text-white bg-gray-500 rounded-lg cursor-not-allowed'>Transaction Completed</button>)}
+                {/* Claim Button */}
+                {isAvailable && (
+                  <>
+                    <button
+                      onClick={handleClaim}
+                      disabled={isGiver}
+                      className={`btn w-full ${
+                        isGiver
+                          ? 'btn-disabled'
+                          : 'btn-neutral'
+                      }`}
+                    >
+                      Claim
+                    </button>
+
+                    {isGiver && (
+                      <div className="mt-3 text-sm alert alert-warning">
+                        <span>
+                          Only users with <strong>taker</strong> role can claim this item.
+                        </span>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {listing.status === 'claimed' && (
+                  <button disabled className="w-full cursor-not-allowed btn btn-warning">
+                    Already Claimed
+                  </button>
+                )}
+
+                {listing.status === 'completed' && (
+                  <button disabled className="w-full cursor-not-allowed btn btn-success">
+                    Transaction Completed
+                  </button>
+                )}
+
 
                 <p className='text-sm text-center text-gray-600'>
                   {listing.status === 'available' && 'Click to claim this item and start coordinating pickup.'}

@@ -97,8 +97,8 @@
 
         <div className='grid grid-cols-1 gap-6 mx-auto mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-7xl'>
           {listings.data.map(listing => (
-            <div key={listing.id} className='w-full overflow-hidden bg-white rounded-lg shadow-md border hover:shadow-lg transition-shadow'>
-              <Link href={`/listings/${listing.id}`} className="block">
+            <div key={listing.id} className='w-full overflow-hidden transition-shadow bg-white border rounded-lg shadow-md hover:shadow-lg'>
+              <Link href={`/listings/${listing.id}`} className="flex flex-col h-full">
                 {/* image */}
                 <div className='relative w-full h-64'>
                   <img src={listing.photos.length > 0 ? listing.photos[0].image_url : 'images/no_image.jpg'} alt="product" className='object-cover w-full h-full'/>
@@ -113,9 +113,11 @@
                   </div>
                 </div>
                 {/* content */}
-                <div className='p-4'>
-                  <h3 className='font-semibold'>{listing.title}</h3>
-                  <p className='text-sm text-gray-400'>{listing.description}</p>
+                <div className='flex flex-col justify-between h-full p-4'>
+                  <div>
+                    <h3 className='font-semibold'>{listing.title}</h3>
+                    <p className='text-sm text-gray-400 line-clamp-2'>{listing.description}</p>
+                  </div>
                   
                   <div className='flex justify-between text-sm text-gray-500'>
                     <span>{listing.material_type}</span>
