@@ -67,6 +67,12 @@ Route::middleware(['auth'])->group(function () {
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');
+
+
+
 // Route::get('/', function () {
 //     return Inertia::render('Home', [
 //         'stats' => [
