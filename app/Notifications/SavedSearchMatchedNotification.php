@@ -31,7 +31,7 @@ class SavedSearchMatchedNotification extends Notification implements ShouldBroad
     {
         return [
             'listing_id' => $this->listing->id,
-            'title' => 'New listing matches your saved search',
+            'title' => 'New product matches your saved search',
             'message' => $this->listing->title,
             'url' => route('marketplace.show', $this->listing),
             'search_name' => $this->search->name,
@@ -65,7 +65,7 @@ class SavedSearchMatchedNotification extends Notification implements ShouldBroad
         ]);
         return [
             'listing_id' => $this->listing->id,
-            'title' => 'New listing matches your saved search',
+            'title' => 'New Product matches your saved search',
             'message' => $this->listing->title,
             'url' => route('marketplace.show', $this->listing),
             'search_name' => $this->search->name,
