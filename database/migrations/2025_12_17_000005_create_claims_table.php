@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamps();
 
             // One active claim for per listing
-            $table->unique('material_listing_id');
             $table->index(['claimed_by_user_id', 'status']);
         });
     }

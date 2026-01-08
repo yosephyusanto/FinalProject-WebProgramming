@@ -12,12 +12,14 @@ class Message extends Model
         'claim_id',
         'sender_id',
         'message',
+        'is_system_message',
         'read_at'
     ];
 
     protected $casts = [
         'read_at' => 'datetime',
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
+        'is_system_message' => 'boolean'
     ];
 
     // Relationships
@@ -29,6 +31,17 @@ class Message extends Model
         return $this->belongsTo(User::class, 'sender_id');
     }
 
+    public function isSystemMessage(){
+        return $this->is_system_message || is_null($this->sender_id);
+    }
+
+    public function scopeSystemMessages($query){
+        return $query->where('is_system_message', true)->orWhereNull('sender_id');
+    }
+
+    public function scopeUserMessages($query){
+        return $query->where('is_system_message', false)->orWhereNull('sender_id');
+    }
     // check for mark as read
     public function markAsRead(){
         if(!$this->read_at){
