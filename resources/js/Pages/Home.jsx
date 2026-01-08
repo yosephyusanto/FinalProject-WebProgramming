@@ -15,8 +15,7 @@ export default function Home({ stats, featuredProjects }) {
               Turn Unused Materials <br /> Into Meaningful Creations
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              Re-Source connects unused materials with creative minds to reduce waste
-              and create real environmental impact.
+              Re-Source connects unused materials with creative minds to reduce waste and create real environmental impact.
             </p>
 
             <div className="mt-8 flex gap-4">
@@ -60,9 +59,7 @@ export default function Home({ stats, featuredProjects }) {
               Usable materials <br /> are wasted every day
             </h2>
             <p className="mt-6 text-gray-300 max-w-md leading-relaxed">
-              Every day, usable materials end up as waste while creators struggle
-              to find affordable resources. This disconnect leads to unnecessary
-              environmental loss.
+              Every day, usable materials end up as waste while creators struggle to find affordable resources. This disconnect leads to unnecessary environmental loss.
             </p>
           </div>
 
@@ -75,8 +72,7 @@ export default function Home({ stats, featuredProjects }) {
               Turning waste <br /> into shared value
             </h2>
             <p className="mt-6 text-gray-300 max-w-md ml-auto leading-relaxed">
-              Re-Source enables meaningful reuse through collaboration. By connecting
-              people and materials, waste gains new purpose and value.
+              Re-Source enables meaningful reuse through collaboration. By connecting people and materials, waste gains new purpose and value.
             </p>
           </div>
         </div>
@@ -179,21 +175,115 @@ export default function Home({ stats, featuredProjects }) {
       )}
 
       {/*footer*/}
-      <section className="py-24 bg-black text-white text-center rounded-3xl">
-        <h2 className="text-3xl font-bold">
-          Be Part of the Re-Source Community
-        </h2>
-        <p className="mt-4 text-gray-300">
-          Turn waste into value. Create impact together.
-        </p>
+      <section className="mt-24 bg-black text-gray-300 rounded-2xl">
+        <div className="pt-12 pb-6 max-w-7xl mx-auto">
+          <div className="grid gap-24 md:grid-cols-3">
 
-        <Link
-          href="/register"
-          className="inline-block mt-8 px-8 py-4 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition"
-        >
-          Join Re-Source
-        </Link>
+            {/*CTA*/}
+            <div>
+              <h3 className="text-2xl font-semibold text-white leading-snug">
+                Be Part of the <br /> Re-Source Community
+              </h3>
+              <p className="mt-3 text-sm text-gray-400 max-w-sm">
+                Turn unused materials into value.<br></br>
+                Create impact together.
+              </p>
+
+              <Link
+                href="/register"
+                className="inline-block mt-5 px-6 py-3 bg-white text-black rounded-lg text-sm font-medium hover:bg-gray-200 transition"
+              >
+                Join Re-Source
+              </Link>
+            </div>
+
+
+            {/*Platform*/}
+            <div className="mt-8 grid grid-cols-2 gap-20">
+              <div>
+                <h4 className="text-sm font-semibold text-white tracking-wide">
+                  Platform
+                </h4>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>
+                    <Link href="/marketplace" className="hover:text-white transition">
+                      Marketplace
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/gallery" className="hover:text-white transition">
+                      Community Gallery
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/about" className="hover:text-white transition">
+                      About Us
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold text-white tracking-wide">
+                  Legal
+                </h4>
+                <ul className="mt-4 space-y-3 text-sm">
+                  <li>
+                    <a href="#" className="hover:text-white transition">
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition">
+                      Terms & Conditions
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/*Social media*/}
+            <div className="mt-8">
+              <h4 className="text-sm font-semibold text-white tracking-wide">
+                Follow Us
+              </h4>
+              <div className="mt-4 flex gap-4">
+                <a
+                  href="https://www.instagram.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-700 hover:border-white hover:text-white transition"
+                >
+                  <img src="/images/Instagram.png" alt="Instagram" className="h-12 w-12"/>
+                </a>
+                <a
+                  href="https://www.tiktok.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-700 hover:border-white hover:text-white transition"
+                >
+                  <img src="/images/Tiktok.png" alt="Tiktok" className="h-12 w-12"/>
+                </a>
+                <a
+                  href="https://x.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 flex items-center justify-center rounded-full border border-gray-700 hover:border-white hover:text-white transition"
+                >
+                  <img src="/images/X.png" alt="X" className="h-12 w-12"/>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          {/* BOTTOM */}
+          <div className="mt-8 pt-6 border-t border-gray-800 text-sm text-gray-500 text-center">
+            © 2026 Re-Source. All rights reserved.
+          </div>
+        </div>
       </section>
+
     </>
   )
 }
