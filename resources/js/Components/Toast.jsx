@@ -35,7 +35,7 @@ const Toast = () => {
     }, 3000)
 
     return () => clearTimeout(timeout)
-  }, [flash]) // ⬅️ PENTING: jangan per field
+  }, [flash]) 
 
   if (!message) return null
 
