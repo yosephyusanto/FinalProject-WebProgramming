@@ -21,8 +21,8 @@ const MyClaims = ({claims}) => {
                                     <span className={`
                                         px-2 py-1 rounded-full text-x font-semibold
                                         ${claims.status === 'pending' && 'bg-green-100 text-yellow-800'}
-                                        ${claims.status === 'confirmed' && 'bg-yellow-100 text-blue-800'}
-                                        ${claims.status === 'completed' && 'bg-gray-100 text-green-800'}
+                                        ${claims.status === 'completed' && 'bg-yellow-100 text-blue-800'}
+                                        ${claims.status === 'cancelled' && 'bg-gray-100 text-green-800'}
                                     `}>{claim.status}</span>
                                 </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Message;
 use App\Events\NewMessage;
 use Inertia\Inertia;
 
@@ -17,6 +18,11 @@ class MessageController extends Controller
             abort(403, 'Unauthorized.');
         }
 
+        // Check if claim is cancelled or completed (so if cancelled, no new messages)
+        if(in_array($claim->status, ['cancelled', 'completed'])){
+            abort(403, 'Cannot send a messages in a ' . $claim->status . 'claim.');
+        }
+        
         $validated = $request->validate([
             'message' => 'required|string|max:2000',
         ]);
@@ -44,10 +50,8 @@ class MessageController extends Controller
             ->orWhereHas('materialListing', function($q) use ($user){
                 $q->where('user_id', $user->id);
             });
-        })->with(['materialListing.photos', 'materialListing.user', 'claimedBy', 'messages' => function($q){
-            $q->latest()->limit(1);
-        }])
-        ->withCount('messages')->orderBy('updated_at', 'desc')->paginate(12);
+        })->with(['materialListing.photos', 'materialListing.user', 'claimedBy', 'lastMessage.sender'])
+        ->withCount('messages')->orderByDesc(Message::select('created_at')->whereColumn('claim_id', 'claims.id')->latest()->take(1))->paginate(12);
         
         return Inertia::render('Messages/Index', ['claims' => $claims]);
     }

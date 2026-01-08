@@ -9,6 +9,8 @@ use App\Http\Controllers\{
     GalleryProjectController,
     MyGalleryController
 };
+
+use App\Http\Controllers\NotificationHistoryController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     
     Route::post('/claims/{claim}/complete', [ClaimController::class, 'complete'])->name('claims.complete');
+    Route::post('/claims/{claim}/cancel', [ClaimController::class, 'cancel'])->name('claims.cancel');
 
     Route::get('/test-plain', function() {
         $user = Auth::user();
@@ -89,13 +92,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Public routes
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'stats' => [
-            'listings' => \App\Models\MaterialListing::available()->count(),
-            'projects' => \App\Models\GalleryProject::count(),
-            'impact' => \App\Models\MaterialListing::where('status', 'completed')
-                ->sum('estimated_weight'),
-        ]
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');

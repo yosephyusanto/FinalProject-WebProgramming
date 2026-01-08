@@ -130,15 +130,23 @@ const Show = ({listing, auth, flash}) => {
                   <p className='font-medium'>{listing.material_type}</p>
                 </div>
                 <div>
-                  <p className='text-gray-500 text-sm'>Condition</p>
-                  <p className='font-medium'>{listing.condition}</p>
+                  <p className='text-sm text-gray-500'>Color</p>
+                  <p className='font-medium'>{listing.color}</p>
+                </div>
+                <div>
+                  <p className='text-sm text-gray-500'>Size</p>
+                  <p className='font-medium'>{listing.estimated_volume}</p>                 
                 </div>
                 <div>
                   <p className='text-gray-500 text-sm'>Weight</p>
                   <p className='font-medium'>{listing.estimated_weight}</p>
                 </div>
                 <div>
-                  <p className='text-gray-500 text-sm'>Location</p>
+                  <p className='text-sm text-gray-500'>Condition</p>
+                  <p className='font-medium'>{listing.condition}</p>
+                </div>
+                <div>
+                  <p className='text-sm text-gray-500'>Location</p>
                   <p className='font-medium'>{listing.location}</p>
                 </div>
                 <div>

@@ -47,7 +47,11 @@ class MaterialListing extends Model
     }
 
     public function claim():HasOne{
-        return $this->hasOne(Claim::class)->whereIn('status', ['pending', 'confirmed']);
+        return $this->hasOne(Claim::class)->where('status', 'pending');
+    }
+
+    public function claims(){
+        return $this->hasMany(Claim::class);
     }
 
     public function galleryProjects():HasMany{
@@ -71,5 +75,9 @@ class MaterialListing extends Model
 
     public function canBeClaimed(){
         return $this->status === self::STATUS_AVAILABLE;
+    }
+
+    public function hasActiveClaimFrom(User $user){
+        return $this->claims()->where('claimed_by_user_id', $user->id)->where('status', 'pending')->exists();
     }
 }

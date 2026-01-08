@@ -24,7 +24,40 @@ const Navbar = () => {
   }, [user])
 
 
-  const navLinkClass = "text-sm font-medium text-gray-700 hover:text-black transition-colors"
+  const NavLinks = () => (
+    <>
+      {!user && (
+        <>
+          <Link href={route('home')} className={navLinkClass}>Home</Link>
+          <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
+          <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
+          <Link href={route('about')} className={navLinkClass}>About Us</Link>
+        </>
+      )}
+
+      {user?.role === 'giver' && (
+        <>
+          <Link href={route('home')} className={navLinkClass}>Home</Link>
+          <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
+          <Link href={route('my-products')} className={navLinkClass}>My Products</Link>
+          <Link href={route('messages.index')} className={navLinkClass}>Message</Link>
+          <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
+        </>
+      )}
+
+      {user?.role === 'taker' && (
+        <>
+          <Link href={route('home')} className={navLinkClass}>Home</Link>
+          <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
+          <Link href={route('searches.index')} className={navLinkClass}>Saved Search</Link>
+          <Link href={route('my-claims')} className={navLinkClass}>My Claims</Link>
+          <Link href={route('messages.index')} className={navLinkClass}>Message</Link>
+          <Link href={route('my-gallery.index')} className={navLinkClass}>My Gallery</Link>
+          <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
+        </>
+      )}
+    </>
+  )
 
   return (
     <nav className='fixed top-0 left-0 right-0 z-50 w-full h-16 border-b border-gray-200 shadow-sm bg-white/95 backdrop-blur-md'>

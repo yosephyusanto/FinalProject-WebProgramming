@@ -85,18 +85,12 @@ const MessagesIndex = ({ claims: initialClaims, auth }) => {
   }
 
   const getLastMessage = (claim) => {
-    if (!claim.messages || !Array.isArray(claim.messages)) {
+    if (!claim.last_message) {
       return 'No messages yet'
     }
     
-    if (claim.messages.length > 0) {
-      const lastMsg = claim.messages[0]
-      const message = lastMsg.message || ''
-      return message.length > 50 
-        ? message.substring(0, 50) + '...' 
-        : message
-    }
-    return 'No messages yet'
+    const message = claim.last_message.message || ''
+    return message.length > 50 ? message.substring(0, 50) + '...' : message
   }
 
   const getOtherUserName = (claim) => {
@@ -211,7 +205,7 @@ const MessagesIndex = ({ claims: initialClaims, auth }) => {
                             {claim?.material_listing?.title || 'Untitled Listing'}
                           </h3>
                           <span className="text-xs text-gray-500">
-                            {formatTime(claim.updated_at)}
+                            {claim.last_message ? formatTime(claim.last_message.created_at) : ''}
                           </span>
                         </div>
                         
@@ -227,9 +221,9 @@ const MessagesIndex = ({ claims: initialClaims, auth }) => {
                           <span className={`
                             px-2 py-0.5 rounded-full text-xs font-semibold
                             ${claim.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-                            ${claim.status === 'confirmed' ? 'bg-blue-100 text-blue-800' : ''}
-                            ${claim.status === 'completed' ? 'bg-green-100 text-green-800' : ''}
-                            ${!['pending', 'confirmed', 'completed'].includes(claim.status) ? 'bg-gray-100 text-gray-800' : ''}
+                            ${claim.status === 'completed' ? 'bg-blue-100 text-blue-800' : ''}
+                            ${claim.status === 'cancelled' ? 'bg-green-100 text-green-800' : ''}
+                            ${!['pending', 'completed', 'cancelled'].includes(claim.status) ? 'bg-gray-100 text-gray-800' : ''}
                           `}>
                             {claim.status || 'unknown'}
                           </span>
