@@ -11,6 +11,7 @@ use App\Http\Controllers\{
     HomeController
 };
 
+
 use App\Http\Controllers\NotificationHistoryController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Broadcast;
@@ -97,6 +98,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     
     Route::post('/claims/{claim}/complete', [ClaimController::class, 'complete'])->name('claims.complete');
+    Route::post('/claims/{claim}/cancel', [ClaimController::class, 'cancel'])->name('claims.cancel');
 
     // Notifications History
     Route::get('/notifications-history', [NotificationHistoryController::class, 'index'])
