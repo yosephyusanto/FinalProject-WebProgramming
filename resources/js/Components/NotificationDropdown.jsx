@@ -12,6 +12,8 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
 
   const unreadCount = notifications.filter(n => !n.read_at).length
 
+  const displayedNotifications = notifications.slice(0, 3)
+
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -25,7 +27,7 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
         </div>
       </label>
 
-      <ul
+      <ul 
         tabIndex={0}
         className="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-80"
       >
@@ -35,7 +37,7 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
           </li>
         )}
 
-        {notifications.map(notification => (
+        {displayedNotifications.map(notification => (
           <li key={notification.id}>
             <button
               onClick={() => {
@@ -62,6 +64,16 @@ const NotificationDropdown = ({notifications, setNotifications}) => {
             </button>
           </li>
         ))}
+
+        {/* Go to notification history */}
+          <li className="mt-1 border-t pt-1">
+            <button
+              className="w-full text-xs text-center text-primary"
+              onClick={() => router.visit(route('notifications-history.index'))}
+            >
+              View all notifications
+            </button>
+          </li>
 
         {/* Mark all as read */}
         {notifications.length > 0 && unreadCount > 0 && (

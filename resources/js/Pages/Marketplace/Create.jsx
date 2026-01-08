@@ -71,9 +71,9 @@ const onDrop = (e, dropIndex) => {
 
   
   return (
-    <div>
+    <div className='mx-auto max-w-7xl'>
       <h1 className='mt-4 mb-4 text-xl font-bold text-center'>Create New Material</h1>
-      <form onSubmit={submit} className='space-y-4 px-72'>
+      <form onSubmit={submit} className='space-y-4'>
         <div>
           <input type="text" placeholder='title' value={data.title} onChange={e => setData('title', e.target.value)} className='w-full p-2 border'/>
           {errors.title && <div className='text-red-600'>{errors.title}</div>}
@@ -90,7 +90,7 @@ const onDrop = (e, dropIndex) => {
           <input type="text" placeholder='color' value={data.color} onChange={e => setData('color', e.target.value)} className='w-full p-2 border'/>
           {errors.color && <div className='text-red-600'>{errors.color}</div>}
         </div>
-        <div className='flex gap-x-8'>
+        <div className='flex flex-col gap-4 md:flex-row md:gap-x-8'>
           <div className='flex-1'>
             <input type="number" placeholder='estimated weight in kg (number only)' value={data.estimated_weight} onChange={e => setData('estimated_weight', e.target.value)} className='w-full p-2 border'/>
             {errors.estimated_weight && <div className='text-red-600'>{errors.estimated_weight}</div>}
@@ -109,7 +109,7 @@ const onDrop = (e, dropIndex) => {
           {errors.location && <div className='text-red-600'>{errors.location}</div>}
         </div>
         
-        <div className='flex-col md:flex md:flex-row gap-x-8'>
+        <div className='flex flex-col gap-4 md:flex-row md:gap-x-8'>
           <div className='flex-1 space-y-2'>
             <label>Pickup Window Start</label>
             <input type="datetime-local" value={data.pickup_window_start} onChange={e => setData('pickup_window_start', e.target.value)} className='w-full p-2 border'/>
