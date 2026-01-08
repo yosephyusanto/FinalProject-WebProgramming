@@ -100,6 +100,9 @@ const Create = ({userListings}) => {
             <label className='block mb-1 font-medium'>
               Material used (optional)
             </label>
+            <p className='mb-2 text-sm'>
+              List of material that you already claim and the status is "completed"
+            </p>
 
           <select
             className="w-full p-2 border border-gray-500 select select-bordered"

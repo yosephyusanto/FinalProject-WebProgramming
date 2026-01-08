@@ -33,7 +33,7 @@ class MyGalleryController extends Controller
         /**@var App\Models\User $user */
         $userListings = $user->claims()
             ->with('materialListing')
-            ->where('status', 'confirmed')
+            ->where('status', 'completed')
             ->get()
             ->pluck('materialListing');
 
@@ -59,7 +59,7 @@ class MyGalleryController extends Controller
         if ($validated['material_listing_id']) {
             $hasAccess = $user->claims()
                 ->where('material_listing_id', $validated['material_listing_id'])
-                ->where('status', 'confirmed')
+                ->where('status', 'completed')
                 ->exists();
                 
             if (!$hasAccess) {
