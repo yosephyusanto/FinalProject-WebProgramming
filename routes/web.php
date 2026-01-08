@@ -9,6 +9,8 @@ use App\Http\Controllers\{
     GalleryProjectController,
     MyGalleryController
 };
+
+use App\Http\Controllers\NotificationHistoryController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -85,6 +87,16 @@ Route::middleware(['auth'])->group(function () {
         \Illuminate\Support\Facades\Auth::user()->unreadNotifications->markAsRead();
         return back();
     })->name('notifications.readAll');
+
+    // Notifications History
+    Route::get('/notifications-history', [NotificationHistoryController::class, 'index'])
+        ->name('notifications-history.index');
+
+    Route::post('/notifications-history/{id}/read', [NotificationHistoryController::class, 'read'])
+        ->name('notifications-history.read');
+
+    Route::post('/notifications-history/read-all', [NotificationHistoryController::class, 'readAll'])
+        ->name('notifications-history.readAll');
 
 });
 
