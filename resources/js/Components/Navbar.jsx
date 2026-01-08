@@ -101,6 +101,7 @@ useEffect(() => {
           <Link href={route('home')} className={navLinkClass}>Home</Link>
           <Link href={route('marketplace.index')} className={navLinkClass}>Marketplace</Link>
           <Link href={route('my-products')} className={navLinkClass}>My Products</Link>
+          <Link href={route('messages.index')} className={navLinkClass}>Message</Link>
           <Link href={route('gallery.index')} className={navLinkClass}>Gallery</Link>
         </>
       )}
