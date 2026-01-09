@@ -4,19 +4,31 @@ import  {route} from 'ziggy-js'
 
 const Chat = ({ claimId, initialMessages, authUserId, isChatDisabled}) => {
   const bottomRef = useRef(null)
-  const [messageList, setMessageList] = useState(() => {
-    if(!initialMessages) return []
+  useEffect(() => {
+    console.log('Initial messages sample:', initialMessages)
+  }, [])
 
-    if(initialMessages.data && Array.isArray(initialMessages.data)){
-      return initialMessages.data
+  const normalizeMessage = (msg) => {
+    // Handle both initial messages and real-time broadcast messages
+    const normalized = {
+      id: msg.id,
+      sender_id: msg.sender_id ?? null,
+      message: msg.message,
+      created_at: msg.created_at,
+      is_system_message: msg.is_system_message ?? false,
+      sender: msg.sender ?? null,
     }
+    
+    console.log('Normalized message:', normalized)
+    return normalized
+  }
 
-    if(Array.isArray(initialMessages)){
-      return initialMessages
-    }
 
-      return []
-  })
+  const [messageList, setMessageList] = useState(
+    Array.isArray(initialMessages)
+      ? initialMessages.map(normalizeMessage)
+      : []
+  )
   
   const { data, setData, post, reset, processing } = useForm({
     message: '',
@@ -24,19 +36,11 @@ const Chat = ({ claimId, initialMessages, authUserId, isChatDisabled}) => {
 
   // sinkro untuk perubahan page
   useEffect(() => {
-    if(!initialMessages) return
-
-    let newMessages = []
-
-    if(initialMessages.data && Array.isArray(initialMessages.data)){
-      newMessages = initialMessages.data
-    }else if(Array.isArray(initialMessages)){
-      newMessages = initialMessages
+    if (Array.isArray(initialMessages)) {
+      setMessageList(initialMessages.map(normalizeMessage))
     }
-
-    console.log('Syncing...', newMessages.length)
-    setMessageList(newMessages)
   }, [initialMessages])
+
 
   // Auto scroll ke bawah
   useEffect(() => {
@@ -57,22 +61,16 @@ const Chat = ({ claimId, initialMessages, authUserId, isChatDisabled}) => {
     const channel = window.Echo.private(`claims.${claimId}`)
 
     channel.listen('.newMessage', (event) => {
-      setMessageList(prev => {
-        const messageExists = prev.some(msg=> msg.id === event.id)
-        if(messageExists){
-          return prev
-        }
+      console.log('Raw event received:', event)
+      const normalized = normalizeMessage(event)
 
-        return [...prev, {
-          id: event.id,
-          claim_id: event.claim_id,
-          sender_id: event.sender_id,
-          message: event.message,
-          created_at: event.created_at,
-          sender: event.sender || {id:event.sender_id, name: 'User'}
-          }]
+      setMessageList(prev => {
+        if (prev.some(msg => msg.id === normalized.id)) return prev
+        return [...prev, normalized]
       })
     })
+
+
 
     return () => {
       channel.stopListening('.newMessage')
@@ -158,11 +156,12 @@ const Chat = ({ claimId, initialMessages, authUserId, isChatDisabled}) => {
                       <>
                         <div className='flex items-center gap-2 mb-1'>
                           <span className='text-xs font-medium'>
-                            {msg.sender.name || (isOwnMessage ? 'You' : 'User')}
+                            {/* {msg.sender.name || (isOwnMessage ? 'You' : 'User')} */}
+                            {isOwnMessage ? 'You' : msg.sender?.name ?? 'User'}
                           </span>
                         </div>
                         <p className='break-words'>{msg.message}</p>
-                        <p className={`text-xs mt-1 ${isOwnMessage ? 'text-blue=100' : 'text-gray-500'}`}>
+                        <p className={`text-xs mt-1 ${isOwnMessage ? 'text-blue-100' : 'text-gray-500'}`}>
                           {formatTime(msg.created_at)}
                         </p>
                       </>
