@@ -34,18 +34,49 @@ const register = () => {
             {errors.email && <div className="mt-1 text-sm text-red-600">{errors.email}</div>}
           </div>
 
-          <div className="relative flex items-center">
-            <input type={showPassword ? "text" : "password"} value={data.password} onChange={e => setData('password', e.target.value)} placeholder="Password" className="w-full p-2 border"/>
-            <div className="absolute text-lg cursor-pointer right-2" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEye className="text-gray-500"/> : <FaEyeSlash className="text-gray-500" /> }</div>
-            {errors.password && <div className="mt-1 text-sm text-red-600">{errors.password}</div>}
+        <div>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={data.password}
+              onChange={e => setData('password', e.target.value)}
+              placeholder="Password"
+              className="w-full p-2 pr-10 border"
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 flex items-center text-gray-500 right-2"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </button>
           </div>
-    
-          <div className="relative flex items-center">
-            <input type={showConfirmPassword ? "text" : "password"} value={data.password_confirmation} onChange={e => setData('password_confirmation', e.target.value)} placeholder="Confirm Password" className="w-full p-2 border"/>
-            <div className="absolute text-lg cursor-pointer right-2" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? <FaEye style={{color: 'gray'}} /> : <FaEyeSlash style={{color: 'gray'}}/>}</div>
-            {errors.password_confirmation && <div className="mt-1 text-sm text-red-600">{errors.password_confirmation}</div>}
+        </div>
+
+        <div>
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={data.password_confirmation}
+              onChange={e => setData('password_confirmation', e.target.value)}
+              placeholder="Confirm Password"
+              className="w-full p-2 pr-10 border"
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 flex items-center text-gray-500 right-2"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+            </button>
           </div>
-          
+          {errors.password && (
+            <div className="mt-1 text-sm text-red-600">
+              {errors.password}
+            </div>
+          )}
+        </div>
+
           <div>
             <select name="role" className="w-full p-2 border" value={data.role} onChange={e => setData('role', e.target.value)}>
               <option value="giver">Giver</option>

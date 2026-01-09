@@ -29,28 +29,7 @@ useEffect(() => {
         console.log('Successfully subscribed to:', channelName);
     });
 
-    // Listen ke notification broadcast
-    // Format: .Illuminate\\Notifications\\Events\\BroadcastNotificationCreated
-    channel.notification((notification) => {
-        console.log('Notification received:', notification);
-        
-        // const newNotification = {
-        //   id: notification.id || Date.now(),
-        //   data: {
-        //     listing_id: notification.listing_id,
-        //     title: notification.title,
-        //     message: notification.message,
-        //     url: notification.url,
-        //     search_name: notification.search_name,
-        //   },
-        //   read_at: null,
-        //   created_at: new Date().toISOString(),
-        // };
-        
-        setNotifications(prev => [notification, ...prev]);
-    });
 
-    // Atau jika pakai broadcastAs, listen seperti ini:
     channel.listen('.SavedSearchMatched', (data) => {
         console.log('SavedSearchMatched event received:', data);
         
