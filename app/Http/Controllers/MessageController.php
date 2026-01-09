@@ -36,7 +36,7 @@ class MessageController extends Controller
         $message->load('sender');
 
         // Broadcast via Websocket for real-time updates
-        broadcast(new NewMessage($message))->toOthers();
+        broadcast(new NewMessage($message));
 
         return back(); //Inertia will handle the update
     }

@@ -39,9 +39,10 @@ class Message extends Model
         return $query->where('is_system_message', true)->orWhereNull('sender_id');
     }
 
-    public function scopeUserMessages($query){
-        return $query->where('is_system_message', false)->orWhereNull('sender_id');
+   public function scopeUserMessages($query){
+        return $query->where('is_system_message', false)->whereNotNull('sender_id');
     }
+
     // check for mark as read
     public function markAsRead(){
         if(!$this->read_at){

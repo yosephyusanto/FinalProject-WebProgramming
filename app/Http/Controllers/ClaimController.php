@@ -69,9 +69,22 @@ class ClaimController extends Controller
         return Inertia::render('Claims/Show', [
             'claim' => $claim,
             'listing' => $claim->materialListing,
-            'messages' => $claim->messages,
+            'messages' => $claim->messages->map(fn ($message) => [
+                'id' => $message->id,
+                'sender_id' => $message->sender_id,
+                'message' => $message->message,
+                'created_at' => $message->created_at->toISOString(),
+                'is_system_message' => (bool) $message->is_system_message,
+                'sender' => $message->sender ? [
+                    'id' => $message->sender->id,
+                    'name' => $message->sender->name,
+                ] : null,
+            ]),
             'authUserId' => Auth::id(),
-            'otherUser' => $claim->claimed_by_user_id === Auth::id() ? $claim->materialListing->user : $claim->claimedBy,
+            'otherUser' =>
+                $claim->claimed_by_user_id === Auth::id()
+                    ? $claim->materialListing->user
+                    : $claim->claimedBy,
         ]);
     }
 
