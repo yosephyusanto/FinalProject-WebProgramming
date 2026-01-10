@@ -12,7 +12,7 @@ const MyClaims = ({claims}) => {
                     <div key={claim.id} className="overflow-hidden bg-white border rounded-lg shadow-md">
                         <Link href={`/claims/${claim.id}`} className="block">
                             <div className="h-48 overflow-hidden">
-                                <img src={claim.material_listing.photos.length > 0 ? claim.material_listing.photos[0].image_url : 'images/no_images.jpg'} 
+                                <img src={claim.material_listing.photos.length > 0 ? claim.material_listing.photos[0].image_url : '/images/no_image.jpg'} 
                                 alt={claim.material_listing.title} className="object-cover w-full h-full" />
                             </div>
 
