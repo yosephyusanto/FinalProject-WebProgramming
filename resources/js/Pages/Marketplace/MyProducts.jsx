@@ -6,10 +6,17 @@ const MyProducts = ({listings}) => {
     console.log('my products listings: ', listings);
     return (
         <div className="py-8 mx-auto max-w-7xl">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col items-center justify-between mb-8 md:flex-row gap-y-4">
                 <h1 className="text-3xl font-bold text-gray-900">My Products</h1>
                  <Link href={route('listings.create')} className="px-4 py-2 text-white bg-black rounded">Create Listings</Link>
             </div>
+
+            {listings.data.length === 0 && (
+                <p className="text-gray-500">
+                You don't have a product yet
+                </p>
+            )}
+            
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {listings.data.map(listing => (
                     <div key={listing.id} className="overflow-hidden bg-white border rounded-lg shadow-md">

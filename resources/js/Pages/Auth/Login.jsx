@@ -1,5 +1,6 @@
-import React from 'react'
+import {useState} from 'react'
 import {useForm, Link} from '@inertiajs/react'
+import {FaEye, FaEyeSlash} from 'react-icons/fa';
 
 const Login = () => {
   const {data, setData, post, processing, errors} = useForm({
@@ -7,6 +8,7 @@ const Login = () => {
     password: '',
     remember: false,
   })
+  const [showPassword, setShowPassword] = useState(false);
 
   const submit = (e) => {
     e.preventDefault()
@@ -23,9 +25,21 @@ const Login = () => {
             {errors.email && <div className='mt-1 text-sm text-red-600'>{errors.email}</div>}
           </div>
 
-          <div>
-            <input type="password" value={data.password} onChange={e => setData('password', e.target.value)} placeholder='Password' className='w-full p-2 border'/>
-            {errors.password && <div className='mt-1 text-sm text-red-600'>{errors.password}</div>}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={data.password}
+              onChange={e => setData('password', e.target.value)}
+              placeholder="Password"
+              className="w-full p-2 pr-10 border"
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 flex items-center text-gray-500 right-2"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </button>
           </div>
 
           <label className='flex items-center gap-2'>

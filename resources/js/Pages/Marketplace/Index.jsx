@@ -37,16 +37,16 @@
     return (
       <>
         <div>
-          <h1 className='mt-6 mb-6 text-4xl font-bold text-center'>Marketplace</h1>
-          <p className='text-center px-36'>Discover a variety of materials available from other users. Use filters to search by material type, color, and location to meet your needs. You can save your search and we will give you realtime notification once the material that you are looking for is available.</p>  
+          <h1 className='mt-6 mb-4 text-2xl font-bold text-center sm:text-3xl md:text-4xl'>Marketplace</h1>
+          <p className='max-w-3xl px-4 mx-auto text-sm text-center sm:text-base'>Discover a variety of materials available from other users. Use filters to search by material type, color, and location to meet your needs. You can save your search and we will give you realtime notification once the material that you are looking for is available.</p>  
         </div>
 
         {/* Search and Filters */}
-        <form onSubmit={submit} className="flex flex-wrap justify-center gap-4 mt-8 mb-8">
+        <form onSubmit={submit} className="flex flex-col gap-3 px-4 mt-8 mb-8 sm:flex-row sm:flex-wrap sm:justify-center">
           <input
             type="text"
             placeholder="Material type"
-            className="w-48 input input-bordered"
+            className="w-full input input-bordered sm:w-48"
             value={form.material_type}
             onChange={e => setForm({ ...form, material_type: e.target.value })}
           />
@@ -54,7 +54,7 @@
           <input
             type="text"
             placeholder="Color"
-            className="w-48 input input-bordered"
+            className="w-full input input-bordered sm:w-48"
             value={form.color}
             onChange={e => setForm({ ...form, color: e.target.value })}
           />
@@ -62,19 +62,19 @@
           <input
             type="text"
             placeholder="Location"
-            className="w-48 input input-bordered"
+            className="w-full input input-bordered sm:w-48"
             value={form.location}
             onChange={e => setForm({ ...form, location: e.target.value })}
           />
 
-          <button className="btn btn-primary">
+          <button className="w-full btn btn-primary sm:w-auto">
             Search
           </button>
 
           {(filters.material_type || filters.color || filters.location) && (
             <button
               type="button"
-              className="btn btn-outline"
+              className="w-full btn btn-outline sm:w-auto"
               onClick={() => router.get(route('marketplace.index'))}
             >
               Reset
